@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    
+	
+	<types>
+		<members>Opportunity.ACV__c</members>
+		<members>Opportunity.Apttus_Approval__Approval_Status__c</members>
+		<members>Opportunity.Budget_Confirmed__c</members>
+		<members>Opportunity.Closed_Lost_Reason__c</members>
+		<members>Opportunity.Closed_Lost_Reason_Explanation__c</members>
+		<members>Opportunity.Contract_Term_Months__c</members>
+		<members>Opportunity.Apttus_Proposal__Discount_Percent__c</members>
+		<members>Opportunity.Discovery_Completed__c</members>
+		<members>Opportunity.Expected_Revenue__c</members>
+		<members>Opportunity.Expiration_Date__c</members>
+		<members>Opportunity.IMT__c</members>
+		<members>Opportunity.IOT__c</members>
+		<members>Opportunity.Loss_Reason__c</members>
+		<members>Opportunity.MRR__c</members>
+		<members>Opportunity.Opp_Passed_to__c</members>
+		<members>Opportunity.Primary_Contact_Assigned__c</members>
+		<members>Opportunity.Projected_Turnover_Date__c</members>
+		<members>Opportunity.ROI_Analysis_Completed__c</members>
+		<members>Opportunity.TCV__c</members>
+		<name>CustomField</name>
+	</types>
+	
+	
+	
+    <version>34.0</version>
+</Package>

@@ -1,0 +1,159 @@
+<!-- 
+ *
+ *	Apttus Revenue Management
+ *	FeeEdit
+ *	 
+ *	@2009-2011 Apttus Inc. All rights reserved.
+ *
+ -->
+<apex:page standardController="Apttus_Revenue2__Agreement_Fee__c"
+		   extensions="Apttus_Revenue2.FeeEditController" 
+		   showHeader="true" 
+		   sidebar="true"
+		   tabStyle="Apttus__APTS_Agreement__c"
+>
+	<apex:form >
+		<apex:pageBlock id="thePageBlock" 
+						title="Fees and Associations" 
+						mode="{!pageMode}"  >
+			<apex:pageMessages />
+
+			<!-- BEGIN SECTION FOR BUTTONS -->
+			<apex:pageBlockButtons >
+				<apex:commandButton id="cmdButtonDoSave" 
+									action="{!doSave}" 
+									value="Save" />
+				<apex:commandButton id="cmdButtonDoSaveAndNew" 
+									action="{!doSaveAndNew}" 
+									value="Save & New" />
+				<apex:commandButton id="cmdButtonDoCancel" 
+									action="{!doCancel}" 
+									value="Cancel" />
+			</apex:pageBlockButtons>
+			<!-- END SECTION FOR BUTTONS -->
+
+			<!-- BEGIN SECTION FOR PERIOD -->
+			<apex:outputPanel id="feeDetails">
+				<apex:pageBlockSection id="feeSection" 
+									   title="Fee Details"  
+									   columns="1" >
+					<apex:outputField value="{!fee.Apttus_Revenue2__Agreement__c}" />
+					<apex:inputField value="{!fee.Apttus_Revenue2__Revenue_Type__c}" />
+					<apex:inputField value="{!fee.Apttus_Revenue2__Revenue_Subtype__c}" />
+					<apex:inputField value="{!fee.Apttus_Revenue2__Fee_Type__c}">
+						<apex:actionSupport event="onchange" 
+										    reRender="feeSection,tierSection,relFeeSection"
+											status="feeTypeStatus" />                
+                        &nbsp;&nbsp; 
+                        <b><apex:actionStatus id="feeTypeStatus" startText="Please wait..."  /> </b>
+					</apex:inputField>
+					<apex:inputField value="{!fee.Apttus_Revenue2__Flat_Fee__c}" 
+									 rendered="{!fee.Apttus_Revenue2__Fee_Type__c = 'Flat Fee'}" />
+					<apex:inputField value="{!fee.Apttus_Revenue2__Unit_Price__c}" 
+									 rendered="{!(fee.Fee_Type__c = 'Per Unit') || 
+									 		     (fee.Fee_Type__c = 'Per User') || 
+									 		     (fee.Fee_Type__c = 'Revenue Share')}" />
+					<apex:inputField value="{!fee.Apttus_Revenue2__Percent_of_Revenue__c}"
+									 rendered="{!(fee.Fee_Type__c = '% of Revenue') || 
+									 			 (fee.Fee_Type__c = 'Revenue Share')}"	/>
+					<apex:inputField value="{!fee.Apttus_Revenue2__RevRec_Rule__c}">
+						<apex:actionSupport event="onchange" reRender="endDateSection" status="ruleStatus" />                
+                        &nbsp;&nbsp; 
+                        <b><apex:actionStatus id="ruleStatus" startText="Please wait..." /> </b>
+					</apex:inputField>
+					<apex:inputField value="{!fee.Apttus_Revenue2__Invoice_Number__c}" />
+					<apex:inputField value="{!fee.Apttus_Revenue2__Invoice_Date__c}" />
+					<apex:inputField value="{!fee.Apttus_Revenue2__Comments__c}" style="width: 300px;" />
+				</apex:pageBlockSection>
+			<!-- END SECTION FOR FEE DETAILS -->
+			</apex:outputPanel>
+
+			<!-- BEGIN SECTION FOR PERIOD -->
+			<apex:outputPanel id="periodSection">
+				<apex:pageBlockSection title="Effectivity Period">
+					<apex:inputField value="{!fee.Apttus_Revenue2__One_Time_Recurring__c}">
+						<apex:actionSupport event="onchange"
+											reRender="periodSection,startDateSection,endDateSection"
+											status="periodSectionStatus" />
+                            &nbsp;&nbsp; 
+                            <b><apex:actionStatus id="periodSectionStatus" startText="please wait..."  /></b>
+					</apex:inputField>
+					<apex:inputField value="{!fee.Apttus_Revenue2__Frequency__c}"
+									 rendered="{!fee.Apttus_Revenue2__One_Time_Recurring__c == 'Recurring'}" />
+				</apex:pageBlockSection>
+			</apex:outputPanel>
+			<!-- END SECTION FOR PERIOD -->
+
+			<!-- BEGIN SECTION FOR START DATE -->
+			<apex:outputPanel id="startDateSection">
+				<apex:pageBlockSection title="Start Date">
+					<apex:inputField value="{!fee.Apttus_Revenue2__Is_Start_Date_Milestone_Based__c}">
+						<apex:actionSupport event="onclick" 
+											reRender="startDateSection"
+											status="startDateSectionStatus" />
+                        &nbsp;&nbsp;
+                        <b><apex:actionStatus id="startDateSectionStatus" startText="please wait..."  /> </b>
+					</apex:inputField>
+					
+					<apex:pageBlockSectionItem rendered="{!fee.Apttus_Revenue2__Is_Start_Date_Milestone_Based__c == true}" >
+						<apex:outputLabel for="selectStartMilestone">Milestone &nbsp;</apex:outputLabel>
+						<apex:selectList id="selectStartMilestone" 
+										 value="{!fee.Apttus_Revenue2__Start_Milestone__c}" size="1"  >
+							<apex:selectOptions value="{!milestoneNames}" />
+							<apex:actionSupport event="onchange" 
+												reRender="startDateSection"
+												status="startDateSectionStatus" >
+							</apex:actionSupport>
+						</apex:selectList>
+					</apex:pageBlockSectionItem>
+					
+					<apex:outputField value="{!startMilestone.Apttus_Revenue2__Expected_Date__c}"
+									  rendered="{!fee.Apttus_Revenue2__Is_Start_Date_Milestone_Based__c == true}" />
+					<apex:outputField value="{!startMilestone.Apttus_Revenue2__Actual_Date__c}"
+									  rendered="{!fee.Apttus_Revenue2__Is_Start_Date_Milestone_Based__c == true}" />
+					<apex:inputField value="{!fee.Apttus_Revenue2__Fixed_Start_Date__c}"
+									 rendered="{!fee.Apttus_Revenue2__Is_Start_Date_Milestone_Based__c == false}" />
+				</apex:pageBlockSection>
+			</apex:outputPanel>
+			<!-- END SECTION FOR START DATE -->
+
+			<!-- BEGIN SECTION FOR END DATE -->
+			<apex:outputPanel id="endDateSection">
+				<apex:pageBlockSection title="End Date"
+									   rendered="{!(fee.RevRec_Rule__c = 'Subscription') || 
+									   			   (fee.RevRec_Rule__c = 'Ratable') || 
+									   			   (fee.One_Time_Recurring__c == 'Recurring')}" >
+					<apex:inputField value="{!fee.Apttus_Revenue2__Fixed_End_Date__c}" />
+				</apex:pageBlockSection>
+			</apex:outputPanel>
+			<!-- END SECTION FOR END DATE -->
+
+			<!-- Fee selection -->
+			<apex:outputPanel id="relFeeSection">
+				<c:RelatedFeesEdit relFeeList="{!relFeeList}"
+								   hasRelFees="{!hasRelFees}" 
+								   feeType="{!fee.Apttus_Revenue2__Fee_Type__c}"
+								   msgNoRelatedFees="{!msgNoRelatedFees}" />
+			</apex:outputPanel>
+
+			<!-- Tier definitions -->
+			<apex:outputPanel id="tierSection">
+				<c:FeeTierEdit tierList="{!tierList}" 
+							   feeType="{!fee.Apttus_Revenue2__Fee_Type__c}" 
+							   tierCurrency="{!tierCurrency}" />
+			</apex:outputPanel>
+
+			<c:ApplicableProductsEdit productList="{!productList}"
+									  hasProducts="{!hasProducts}"
+									  msgNoProductsForAgmt="{!msgNoProductsForAgmt}" />
+			<c:ApplicablePrepaysEdit prepayList="{!prepayList}"
+									 hasPrepays="{!hasPrepays}"
+									 msgNoPrepaysForAgmt="{!msgNoPrepaysForAgmt}" />
+			<c:ApplicableTrueupsEdit trueupList="{!trueupList}"
+									 hasTrueups="{!hasTrueups}"
+									 msgNoTrueupsForAgmt="{!msgNoTrueupsForAgmt}" />
+			<c:ActivityHistory activityList="{!activityList}"/>
+
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

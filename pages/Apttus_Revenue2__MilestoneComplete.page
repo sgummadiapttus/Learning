@@ -1,0 +1,37 @@
+<apex:page standardController="Apttus_Revenue2__Milestone__c"
+		   extensions="Apttus_Revenue2.MilestoneCompleteController" showHeader="true"
+		   sidebar="true" tabStyle="Apttus__APTS_Agreement__c">
+	<style>
+.comments_w {
+	width: 300px;
+}
+</style>
+
+	<apex:form >
+		<apex:pageBlock id="pageBlock" title="Complete Milestone">
+			<apex:pageMessages />
+			<apex:pageBlockButtons >
+				<apex:commandButton action="{!doSave}" value="Save"
+					id="cmdButtonDoSave"
+					rendered="{!NOT(milestone.Apttus_Revenue2__Status__c == 'Completed')}" />
+				<apex:commandButton action="{!doCancel}" value="Cancel"
+					id="cmdButtonDoCancel" />
+			</apex:pageBlockButtons>
+			<apex:pageBlockSection >
+				<apex:outputField value="{!milestone.Name}" />
+				<apex:outputField value="{!milestone.Apttus_Revenue2__Expected_Date__c}" />
+				<apex:outputField value="{!milestone.Apttus_Revenue2__Comments__c}" />
+				<apex:inputField value="{!milestone.Apttus_Revenue2__Actual_Date__c}"
+					rendered="{!NOT(milestone.Apttus_Revenue2__Status__c == 'Completed')}" />
+				<apex:outputField value="{!milestone.Apttus_Revenue2__Actual_Date__c}"
+					rendered="{!milestone.Apttus_Revenue2__Status__c == 'Completed'}" />
+				<apex:pageBlockSectionItem rendered="{!NOT(milestone.Apttus_Revenue2__Status__c == 'Completed')}">
+					<apex:outputLabel value="Completion Comments"
+						for="completionComments" />
+					<apex:inputTextArea rows="3" id="completionComments"
+						value="{!completionComments}" styleClass="comments_w" />
+				</apex:pageBlockSectionItem>
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

@@ -1,0 +1,117 @@
+<!-- 
+    Apttus CPQ Approvals
+    CartApprovals
+     
+    @2013-2015 Apttus Inc. All rights reserved.
+
+ -->
+<apex:page controller="Apttus_CQApprov.CartApprovalsController"
+           sidebar="{!showSidebar}"
+           showHeader="{!showHeader}"
+           standardStylesheets="true">
+           
+    <script type="text/javascript">
+        // determine if we are in salesforce1
+        var inSf1Mode = false;
+        try {
+            if (sforce.one) {
+                inSf1Mode = true;
+            }
+        }
+        catch(err) {
+        }
+    </script>
+    
+    <script>
+        /**
+            AWA-942: unknown exception displayed while previewing approvals in communities
+            Receiving an 500 (Internal Server Error) in the javascript console (Chrome) when invoking Apex from sforce.apex.execute.
+            When showHeader="true" this error does not appear and it is successful to call an public webservice method but when
+            showHeader="false", it fails with the status code as 500. 
+    
+            https://help.salesforce.com/apex/HTViewSolution?urlname=Receiving-an-500-Internal-Server-Error-in-the-javascript-console-when-invoking-Apex-from-sforce-apex-execute&language=en_US
+        */
+        var __sfdcSessionId = '{!GETSESSIONID()}';
+    </script>
+
+    <!-- include required resources without cart header -->
+    <apex:includescript value="{!URLFOR($Resource.Apttus_Approval__ApprovalsSF1Assets, 'js/jquery.js')}" />
+    
+    <script type="text/javascript" src="/soap/ajax/33.0/connection.js"></script>
+    <script type="text/javascript" src="/soap/ajax/33.0/apex.js"></script>
+
+    <apex:form >
+        <!-- Add invisible button to resolve AWA-942.  To add 'UserContext' with standardStylesheets="true" and showHeader="false",
+             it is necessary to have a component which requires standard style sheets at least in the page. -->
+        <apex:commandButton style="display: none;"/>
+        
+        <apex:outputPanel id="idReturnToCaller">
+            <script type="text/javascript">
+                // make sure jQuery doesn't conflict with any other JS libraries
+                j$ = jQuery.noConflict();
+
+                // call this once the page is ready
+                j$(document).ready(function() {
+                          
+                    // handle page navigation based on whether or not we are in salesforce1 mode
+                    var pageLoaded = "{!pageLoaded}";
+                    var pageURL = "{!JSENCODE(pageURL)}";
+
+                    if (pageLoaded == 'false') {
+                        launchSObjectApprovals(inSf1Mode);
+
+                    } else {
+                        if (pageURL.length > 0) {
+                            // determine if we are in Salesforce1 and set navigation link appropriately
+                            try {
+                                if (sforce.one) {
+                                    sforce.one.navigateToURL(pageURL);
+                                }
+                                else {
+                                    top.location.replace(pageURL);
+                                    return true;
+                                }
+                            }
+                            catch(err) {
+                            }
+                        }
+                    
+                    }
+                    
+                });
+            </script>
+        </apex:outputPanel>
+
+        <script>
+            function invokeDoReturn(actionTaken) {
+                // pass actionTaken as parameter since we will redirect page after refresh
+                returnToCaller(actionTaken);
+            }
+        </script>
+        
+        <apex:pageMessages id="idErrorPanel" />
+
+        <apex:outputPanel id="idApprovalsPanel">
+            <Apttus_Approval:SObjectApprovals2 id="idSObjectApprovals"
+                                               rendered="{!pageLoaded && NOT(inSf1Mode)}"
+                                               contextInfoParam="{!contextInfo}" />
+            <Apttus_Approval:SObjectApprovals2Sf1 id="idSObjectApprovalsSf1"
+                                                  rendered="{!pageLoaded && inSf1Mode}"
+                                                  contextInfoParam="{!contextInfo}" />
+        </apex:outputPanel>
+
+        <apex:actionFunction name="launchSObjectApprovals"
+                             action="{!doLaunchSObjectApprovals}"
+                             reRender="idErrorPanel,idApprovalsPanel">
+            <apex:param name="param1" assignTo="{!inSf1Mode}" value="" />
+        </apex:actionFunction>
+
+        <!-- pass actionTaken as parameter since we will redirect page after refresh -->
+        <apex:actionFunction name="returnToCaller"
+                             action="{!doReturnToCaller}"
+                             reRender="idReturnToCaller">
+            <apex:param name="actionTaken" value="" />
+        </apex:actionFunction>
+
+    </apex:form>
+</apex:page>

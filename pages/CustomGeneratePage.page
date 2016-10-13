@@ -1,0 +1,75 @@
+<!---
+***************************************************************
+* Created By    - Neeharika Upadrasta
+* Created Date  - 07/14/2016
+* Purpose       - Generate multiple documents from Agreement
+* Modified		- 08/16/2016
+* Purpose		- Added options to select Protection levels 
+* Modified		- 08/19/2016
+* Purpose		- Added options to select Output Format 
+***************************************************************
+--->
+
+<apex:page standardController="Apttus__APTS_Agreement__c" extensions="APTPS_CustomGenerateController" showHeader="true" sidebar="true" action="{!InitiateAction}">
+    
+    
+    
+    <apex:pageMessages ></apex:pageMessages>
+    <apex:form >   
+        <apex:pageBlock >
+            <apex:pageBlockSection title="{!$Label.Apttus__GenerateAgreement}" collapsible="false" >
+           	<apex:actionStatus id="spinner">
+                <apex:facet name="start">
+                	<apex:outputPanel >
+                        <img src="/resource/Image_LoadingPage" height="45" width="45" position="center"/>
+                        <apex:outputLabel value="Generating...."></apex:outputLabel><br/>
+                	</apex:outputPanel>
+                </apex:facet>
+                </apex:actionStatus><br/><br/>
+            </apex:pageBlockSection><hr/>
+       <!--     <apex:outputText style="font-weight:700" value="1. Select Document Output Format"></apex:outputText><br/>	
+				<apex:panelGrid columns="1" >
+					<apex:outputLabel style="font-weight:bold" />
+					<apex:selectRadio value="{!outputFormat}"  >
+					      <apex:selectOptions value="{!OutputFormatOptions}" />
+					</apex:selectRadio><p/> 
+            </apex:panelGrid><hr/>
+            <apex:outputText style="font-weight:700" value="2. Select Document Protection"></apex:outputText><br/>
+				<apex:panelGrid columns="1" >
+					<apex:outputLabel style="font-weight:bold" />
+					<apex:selectRadio title="{!PLevelTitle}" value="{!pLevel}">
+					  	<apex:selectOptions value="{!PLevels}"  />
+					</apex:selectRadio><p/>
+            </apex:panelGrid><hr/> -->
+
+            <apex:outputText style="font-weight:700" value="3. Select the templates for generating agreement"></apex:outputText><br/>
+            <apex:pageBlockTable value="{!wrapperObjList}" var="wrap">         
+                <apex:column >
+                    <apex:inputCheckbox value="{!wrap.isSelected}" ></apex:inputCheckbox>
+                </apex:column>        
+                <apex:column value="{!wrap.templatename}"/>
+            </apex:pageBlockTable>
+
+           <apex:commandButton action="{!getSelectedList}" value="Generate" status="spinner" oncomplete="contGen()" />
+            <apex:actionFunction action="{!generateDocs}" id="endAction" status="spinner" name="endActionfctn" oncomplete="contGen()" reRender="{!Id}" />
+            <apex:commandButton action="{!FinishPage}" value="Return"/> 
+            <apex:actionFunction action="{!FinishPage}" id="agmtPage" name="returnPage"/>
+        </apex:pageBlock>          
+    </apex:form>
+    			
+    <script>  
+    var numbe = 0;
+
+    function contGen(){  
+        //numofD;
+        //alert('Number of docs is -->'+numofD);
+        endActionfctn();  
+    }
+
+	function finishPage(){
+        alert('Document Generation successful!');
+        returnPage();
+        }
+   </script>
+
+</apex:page>

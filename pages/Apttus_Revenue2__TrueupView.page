@@ -1,0 +1,35 @@
+<!-- 
+ *
+ *	Apttus Revenue Management
+ *	TrueupView
+ *	 
+ *	@2009 Apttus Inc. All rights reserved.
+ *
+ -->
+<apex:page standardController="Apttus_Revenue2__Agreement_Trueup__c"
+		   extensions="Apttus_Revenue2.TrueupViewController" 
+		   showHeader="true" 
+		   sidebar="true"
+		   tabStyle="Apttus__APTS_Agreement__c">
+
+	<apex:detail subject="{!$CurrentPage.parameters.id}" relatedList="false" title="false" />
+
+	<apex:pageBlock title="Trueup Associations" mode="{!pageMode}">
+
+		<c:RevenueSchedule revScheduleList="{!revScheduleList}" 
+						   hasRevSchedules="{!hasRevSchedules}" 
+						   msgNoRevSchedules="{!msgNoRevSchedules}" />
+
+		<c:ApplicableFeesView feeList="{!feeList}" 
+							  hasFees="{!hasFees}"
+							  msgNoFees="{!msgNoFees}" />
+
+		<c:ApplicablePrepaysView prepayList="{!prepayList}"
+								 hasPrepays="{!hasPrepays}" 
+								 msgNoPrepays="{!msgNoPrepays}" />
+			
+		<c:ActivityHistory activityList="{!activityList}"/>
+		
+	</apex:pageBlock>
+
+</apex:page>

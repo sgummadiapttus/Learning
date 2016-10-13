@@ -1,0 +1,37 @@
+<!-- 
+    Apttus Revenue Management
+    GenerateForecastRevenue
+     
+    @2009 Apttus Inc. All rights reserved.
+
+ -->
+<apex:page standardController="Apttus__APTS_Agreement__c" 
+	  	   extensions="Apttus_Revenue2.GenerateForecastRevenueController" 
+           showHeader="true" sidebar="true" 
+           action="{!init}" >	
+           
+	<apex:sectionHeader title="Generate Revenue (Forecast)"></apex:sectionHeader>
+	
+	<apex:form >
+		<apex:pageBlock title="{!statusText}" id="idPageBlock">
+			<apex:pageMessages />
+			<apex:pageBlockButtons location="top">
+		        <apex:commandButton value="Return" action="{!doReturn}" immediate="true" disabled="{!actionPollerEnabled}" />
+		    </apex:pageBlockButtons>
+		    <apex:pageBlockSection title="Agreement Information" columns="2">
+				<apex:outputField value="{!Apttus__APTS_Agreement__c.Name}"/>
+				<apex:outputField value="{!Apttus__APTS_Agreement__c.Apttus__Contract_Start_Date__c}"/>
+				<apex:outputField value="{!Apttus__APTS_Agreement__c.Apttus__FF_Agreement_Number__c}"/>
+				<apex:outputField value="{!Apttus__APTS_Agreement__c.Apttus__Contract_End_Date__c}"/>
+				<apex:outputField value="{!Apttus__APTS_Agreement__c.Apttus_Revenue2__RevRec_Forecast_Period_Date__c}"/>
+				<apex:outputField value="{!Apttus__APTS_Agreement__c.Apttus_Revenue2__RevRec_Forecast_Period_Number__c}"/>
+				<apex:outputField value="{!RevRecPeriod.Apttus_Revenue2__Current_Period_Date__c}"/>
+				<apex:outputField value="{!Apttus__APTS_Agreement__c.Apttus_Revenue2__RevRec_Forecast_IsActive__c}"/>
+		    </apex:pageBlockSection>
+		    <apex:facet name="footer">processing time {!ProcessingTimeSecs} seconds.</apex:facet>
+		    <apex:actionPoller enabled="{!actionPollerEnabled}" interval="5" action="{!executeProcess}" rerender="idPageBlock" status="idStatus"></apex:actionPoller>
+		    <apex:actionStatus id="idStatus" startText="Getting status..."></apex:actionStatus> 
+		</apex:pageBlock>
+	</apex:form>
+
+</apex:page>

@@ -1,0 +1,117 @@
+<!-- 
+    Apttus Revenue Management
+    RevRecPeriodView
+     
+    @2009-2013 Apttus Inc. All rights reserved.
+
+ -->
+<apex:page standardController="Apttus_Revenue2__RevRec_Period__c"
+		   extensions="Apttus_Revenue2.RevRecPeriodViewController" showHeader="true"
+		   sidebar="true" tabStyle="Revenue_Console__tab" 
+		   action="{!init}">
+		   
+	<apex:form >
+		<apex:outputPanel id="revrecSummary">
+			<apex:pageBlock title="Revenue Recognition Console" id="thePageBlock">
+				<apex:pageMessages />
+				<apex:pageBlockButtons location="top">
+				
+					<apex:commandButton id="cmdButtonDoGenerateRevenue"
+										value="Generate Actual" 
+										action="{!doGenerateActualRevenue}" 
+										rendered="{!countOfAgreements > 0}" 
+										reRender="revrecSummary" />
+						
+					<apex:commandButton id="cmdButtonDoRollbackRevenue"
+										value="Rollback Actual" 
+										action="{!doRollbackActualRevenue}"
+										rendered="{!countOfRevenueSummary > 0}" 
+										reRender="revrecSummary" />
+						
+					<apex:commandButton id="cmdButtonDoGenerateForecastRevenue"
+										value="Generate Forecast"
+										action="{!doGenerateForecastRevenue}"
+										rendered="{!(countOfAgreements > 0 || countOfRevenueSummary > 0)}" />
+						
+					<apex:commandButton id="cmdButtonDoRollbackForecastRevenue"
+										value="Rollback Forecast"
+										action="{!doRollbackForecastRevenue}"
+										rendered="{!(countOfAgreements > 0 || countOfRevenueSummary > 0)}" />
+					
+					<apex:commandButton id="cmdButtonDoClosePeriod"
+										value="Close Period" action="{!doClosePeriod}"
+										rendered="{!countOfAgreements = 0}" 
+										reRender="revrecSummary" />
+						
+					<apex:commandButton id="cmdButtonDoRollbackPeriod"
+										value="Rollback Period" action="{!doRollbackPeriod}"
+										rendered="{!countOfRevenueSummary = 0}" 
+										reRender="revrecSummary" />
+						
+				</apex:pageBlockButtons>
+				<apex:pageBlockButtons location="bottom">
+					
+					<apex:commandButton id="cmdButtonDoUpdateForecast"
+										value="Actual to Forecast"
+										action="{!doUpdateForecast}"
+										rendered="{!(countOfAgreements > 0 || countOfRevenueSummary > 0)}" />
+					
+					<apex:commandButton id="cmdButtonDoUpdateBudget"
+										value="Forecast To Budget"
+										action="{!doUpdateBudget}"
+										rendered="{!(countOfAgreements > 0 || countOfRevenueSummary > 0)}" />
+					
+					<apex:commandButton id="cmdButtonDoComputeFeeAmount"
+										value="Compute Fee Amount"
+										action="{!doComputeFeeAmount}"
+										rendered="{!(countOfAgreements > 0 || countOfRevenueSummary > 0)}" />
+					
+					<apex:commandButton id="cmdButtonDoGenerateFeeSchedule"
+										value="Generate Fee Schedule"
+										action="{!doGenerateFeeSchedule}"
+										rendered="{!(countOfAgreements > 0 || countOfRevenueSummary > 0)}" />
+							
+					<apex:commandButton id="cmdButtonDoCreateForecastSnapshot"
+										value="Create Forecast Snapshot"
+										action="{!doCreateForecastSnapshot}"
+										rendered="{!(countOfAgreements > 0 || countOfRevenueSummary > 0)}" />
+							
+					<apex:commandButton id="cmdButtonDoDeleteCompletedBatchJobs"
+										value="Delete Completed Jobs" 
+										action="{!doDeleteCompletedBatchJobs}"
+										rendered="{!HasCompletedBatchJobs}" 
+										reRender="revrecSummary" />
+						
+				</apex:pageBlockButtons>
+				<apex:pageBlockSection title="RevRec Summary" columns="1">
+					<apex:outputField value="{!revrec.Name}" />
+					<apex:outputField value="{!revrec.Apttus_Revenue2__Current_Period_Date__c}" />
+					<apex:pageBlockSectionItem >
+						<apex:outputLabel value="Number Of Agreements" for="agreementCount" />
+						<apex:outputText id="agreementCount" value="{!countOfAgreements}" />
+					</apex:pageBlockSectionItem>
+					<apex:pageBlockSectionItem >
+						<apex:outputLabel value="Eligible Agreements" for="agmtReport" />
+						<apex:outputLink value="/00O80000003EGPy" id="agmtReport">Eligible Agreements Report</apex:outputLink>
+					</apex:pageBlockSectionItem>
+					<apex:pageBlockSectionItem >
+						<apex:outputLabel value="Number Of Revenue Summary" for="revSummaryCount" />
+						<apex:outputText id="revSummaryCount" value="{!countOfRevenueSummary}" />
+					</apex:pageBlockSectionItem>
+					<apex:pageBlockSectionItem >
+						<apex:outputLabel value="Revenue Summary" for="agmtReport" />
+						<apex:outputLink value="/00O80000003EGQ0">Revenue Summary Report</apex:outputLink>
+					</apex:pageBlockSectionItem>
+					<apex:pageBlockSectionItem >
+						<apex:outputLabel value="Revenue Schedule" for="agmtReport" />
+						<apex:outputLink value="/00O80000003EGPz">Revenue Schedule Detail Report</apex:outputLink>
+					</apex:pageBlockSectionItem>
+					<apex:pageBlockSectionItem >
+						<apex:outputLabel value="Number Of Agreements Ready to Forecast" for="forecastCount" />
+						<apex:outputText id="forecastCount" value="{!countOfAgreementsWithForecastActive}" />
+					</apex:pageBlockSectionItem>
+				</apex:pageBlockSection>
+			</apex:pageBlock>
+		</apex:outputPanel>
+	</apex:form>
+</apex:page>

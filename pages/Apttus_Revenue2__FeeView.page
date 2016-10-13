@@ -1,0 +1,51 @@
+<!-- 
+ *
+ *	Apttus Revenue Management
+ *	FeeView
+ *	 
+ *	@2009-2012 Apttus Inc. All rights reserved.
+ *
+ -->
+<apex:page standardController="Apttus_Revenue2__Agreement_Fee__c"
+		   extensions="Apttus_Revenue2.FeeViewController" 
+		   showHeader="true" 
+		   sidebar="true"
+		   tabStyle="Apttus__APTS_Agreement__c" >
+
+	<apex:detail subject="{!$CurrentPage.parameters.id}" 
+				 relatedList="false" 
+				 title="false" />
+	
+	<apex:relatedList list="Agreement_Fee_Adjustments__r" />
+	
+	<apex:pageBlock title="Fee Associations" mode="{!pageMode}">
+
+		<c:RevenueSchedule revScheduleList="{!revScheduleList}" 
+						   hasRevSchedules="{!hasRevSchedules}" 
+						   msgNoRevSchedules="{!msgNoRevSchedules}" />
+
+		<c:RelatedFeesView relFeeList="{!relFeeList}"
+						   hasRelFees="{!hasRelFees}" 
+						   feeType="{!fee.Apttus_Revenue2__Fee_Type__c}"
+						   msgNoRelatedFees="{!msgNoRelatedFees}" />
+
+		<c:FeeTierView tierList="{!tierList}" 
+					   feeType="{!fee.Apttus_Revenue2__Fee_Type__c}" />
+		
+		<c:ApplicableProductsView productList="{!productList}"
+								  hasProducts="{!hasProducts}" 
+								  msgNoProducts="{!msgNoProducts}" />
+
+		<c:ApplicablePrepaysView prepayList="{!prepayList}"
+								 hasPrepays="{!hasPrepays}" 
+								 msgNoPrepays="{!msgNoPrepays}" />
+
+		<c:ApplicableTrueupsView trueupList="{!trueupList}"
+								 hasTrueups="{!hasTrueups}" 
+								 msgNoTrueups="{!msgNoTrueups}" />
+			
+		<c:ActivityHistory activityList="{!activityList}"/>
+
+	</apex:pageBlock>
+
+</apex:page>

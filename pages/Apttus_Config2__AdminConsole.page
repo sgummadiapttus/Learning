@@ -1,0 +1,117 @@
+<!--
+    Apttus Config & Pricing
+    AdminConsole
+
+    @2014-2015 Apttus Inc. All rights reserved.
+ -->
+<apex:page controller="Apttus_Config2.AdminConsoleController"
+           sidebar="false"
+           tabStyle="AdminConsole__tab">
+
+    <apex:stylesheet value="{!URLFOR($Resource.Apttus_Config2__JQueryUILibrary19, 'css/smoothness/jquery-ui-1.9.2.custom.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.Apttus_Config2__FormeeLibrary, '/css/formee-style.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.Apttus_Config2__FormeeLibrary, '/css/formee-structure.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.Apttus_Config2__ConsoleCSS)}" />
+
+    <apex:includeScript value="{!URLFOR($Resource.Apttus_Config2__JQueryUILibrary19, 'js/jquery-1.8.3.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.Apttus_Config2__JQueryUILibrary19, 'js/jquery-ui-1.9.2.custom.min.js')}" />
+    <apex:includeScript value="{!URLFOR($Resource.Apttus_Config2__FormeeLibrary, '/js/formee.js')}" />
+
+    <script type="text/javascript">
+        var j$ = jQuery.noConflict();
+
+        function goToPage(pageUrl) {
+            if (!pageUrl || '' === pageUrl) {
+              alert('Page not found.');
+            
+            } else{
+              window.location.href = pageUrl;
+              
+            }
+
+        }
+
+    </script>
+
+        <apex:outputPanel layout="block"
+                          styleClass="aptRoundedDiv"
+                          style="margin-right:10px; margin-top:10px;" >
+
+            <apex:outputPanel styleClass="aptConsole" layout="block">
+              <apex:outputPanel styleClass="aptConsoleWrapper" layout="block">
+
+                <apex:outputPanel styleClass="aptConsoleItem"
+                                  onclick="goToPage('{!productsUrl}');" 
+                                  layout="block">
+                  <apex:image url="{!URLFOR($Resource.Apttus_Config2__AdminIcons, 'AdminIcons/manage.png')}" 
+                              styleClass="aptConsoleImage"
+                              title="{!$Label.Apttus_Config2__ManageProducts}"
+                              alt="{!$Label.Apttus_Config2__ManageProducts}" />
+                  <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block">{!$Label.Apttus_Config2__ManageProducts}</apex:outputPanel>
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="aptConsoleItem"
+                                  onclick="goToPage('{!manageProductUrl}');" 
+                                  layout="block">
+                  <apex:image url="{!URLFOR($Resource.Apttus_Config2__AdminIcons, 'AdminIcons/addproducts.png')}" 
+                              styleClass="aptConsoleImage"
+                              title="{!$Label.Apttus_Config2__AddProduct}"
+                              alt="{!$Label.Apttus_Config2__AddProduct}" />
+                  <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block">{!$Label.Apttus_Config2__AddProduct}</apex:outputPanel>
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="aptConsoleItem"
+                                  onclick="goToPage('{!bulkImportUrl}');" 
+                                  layout="block">
+                  <apex:image url="{!URLFOR($Resource.Apttus_Config2__AdminIcons, 'AdminIcons/bulkimport.png')}" 
+                              styleClass="aptConsoleImage"
+                              title="{!$Label.Apttus_Config2__BulkImport}"
+                              alt="{!$Label.Apttus_Config2__BulkImport}" />
+                  <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block">{!$Label.Apttus_Config2__BulkImport}</apex:outputPanel>
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="aptConsoleItem"
+                                  onclick="goToPage('{!permissionSetsUrl}');" 
+                                  layout="block">
+                  <apex:image url="{!URLFOR($Resource.Apttus_Config2__AdminIcons, 'AdminIcons/permissions.png')}" 
+                              styleClass="aptConsoleImage"
+                              title="{!$Label.Apttus_Config2__Permissions}"
+                              alt="{!$Label.Apttus_Config2__Permissions}" />
+                  <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block">{!$Label.Apttus_Config2__Permissions}</apex:outputPanel>
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="aptConsoleItem"
+                                  onclick="goToPage('{!dealApprovalsUrl}');" 
+                                  layout="block">
+                  <apex:image url="{!URLFOR($Resource.Apttus_Config2__AdminIcons, 'AdminIcons/approvals.png')}" 
+                              styleClass="aptConsoleImage"
+                              title="{!$Label.Apttus_Config2__DealApprovals}"
+                              alt="{!$Label.Apttus_Config2__DealApprovals}" />
+                  <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block">{!$Label.Apttus_Config2__DealApprovals}</apex:outputPanel>
+
+                </apex:outputPanel>
+                <apex:outputPanel styleClass="aptConsoleItem"
+                                  onclick="goToPage('{!priceRulesUrl}');" 
+                                  layout="block">
+                  <apex:image url="{!URLFOR($Resource.Apttus_Config2__AdminIcons, 'AdminIcons/pricerules.png')}" 
+                              styleClass="aptConsoleImage"
+                              title="{!$Label.Apttus_Config2__PriceRules}"
+                              alt="{!$Label.Apttus_Config2__PriceRules}" />
+                  <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block">{!$Label.Apttus_Config2__PriceRules}</apex:outputPanel>
+
+                </apex:outputPanel>
+
+                <apex:outputPanel styleClass="aptConsoleItem"
+                                  onclick="goToPage('{!manageAppSettingsUrl}');" 
+                                  layout="block">
+                  <apex:image url="{!URLFOR($Resource.Apttus_Config2__AdminIcons, 'AdminIcons/settings.png')}" 
+                              styleClass="aptConsoleImage"
+                              title="{!$Label.Apttus_Config2__Settings}"
+                              alt="{!$Label.Apttus_Config2__Settings}" />
+                  <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block">{!$Label.Apttus_Config2__Settings}</apex:outputPanel>
+
+                </apex:outputPanel>
+              </apex:outputPanel>
+
+            </apex:outputPanel>
+        </apex:outputPanel>
+
+      <c:HelpDoc />        
+
+</apex:page>

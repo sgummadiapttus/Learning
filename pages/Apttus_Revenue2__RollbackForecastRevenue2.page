@@ -1,0 +1,245 @@
+<!-- 
+    Apttus Revenue Management
+    RollbackForecastRevenue2
+     
+    @2011-2012 Apttus Inc. All rights reserved.
+
+	Summary
+ 	-------
+  	The rollback forecast revenue2 page may be used to rollback forecast revenue schedules by passing 
+  	the agreement id and a period date to rollback the forecast to. If the period date is not passed, the entire 
+  	forecast will be rolled back. 
+  	The user must wait for the rollback to be completed before moving away from the page otherwise 
+  	the process will be interrupted.
+ 
+	parameters
+    ==========
+    Name			| Required | Description
+    ================|==========|======================================================================================
+    id				| Yes	   | The agreement record id. 
+    				|          | Valid values are : Generate_Agreement, Generate_Supporting_Document. 
+    				|		   | The default value is Generate_Agreement. 
+    				|		   |
+    periodDate		| No       | The date to rollback the forecast to/ The date must be passed in yyyy-MM-dd format.
+                    |          |				
+   	finishPage		| No	   | The name of the finish page to navigate to after the rollback process is completed.
+   					|		   | Parameters for the finish page may be passed by prefixing the parameter name with 'finish_'.
+   					|		   | for e.g. if you pass in a parameter finish_id, the finish page will be called 
+   					|		   | with the parameter id. A record id may be passed as the value for the finish page.
+   					|		   |
+    ===================================================================================================================
+    
+ -->
+<apex:page standardController="Apttus__APTS_Agreement__c"
+		   extensions="Apttus_Revenue2.RollbackForecastRevenueController2" >
+	
+	<apex:includeScript value="{!URLFOR($Resource.Apttus_Revenue2__JQueryUILibrary, 'js/jquery-1.6.2.min.js')}"/>
+    <apex:includeScript value="{!URLFOR($Resource.Apttus_Revenue2__JQueryUILibrary, 'js/jquery-ui-1.8.16.custom.min.js')}"/>
+    <apex:includeScript value="{!$Resource.Apttus_Revenue2__RevRecJSLib}" />
+    
+    <apex:stylesheet value="{!URLFOR($Resource.Apttus_Revenue2__JQueryUILibrary, 'css/ui-lightness/jquery-ui-1.8.16.custom.css')}"/>
+    
+    <style>
+		
+		/* hide the close x on the loading screen */
+		.waitDialog .ui-dialog-titlebar-close {
+			display: none;
+		}
+		
+	</style>
+	
+    <script type="text/javascript">
+    	// This to make sure jQuery doesn't conflict with any other JS libraries
+    	var j$ = jQuery.noConflict();
+ 		
+ 		j$(document).ready(function(){
+			
+			// setup namespace
+			j$.APTTUS = {};
+			
+		 	// setup the wait panel and set autoOpen to false
+			j$("#waitPanel").dialog({
+				autoOpen: false,	// set this to false so we can manually open it
+				dialogClass: "waitDialog",
+				closeOnEscape: false,
+				draggable: false,
+				width: 300,
+				minHeight: 50,
+				modal: true,
+				buttons: {},
+				resizable: false,
+				position: 'center',
+				open: function() {
+					// scrollbar fix for IE
+					j$('body').css('overflow','hidden');
+				},
+				close: function() {
+					// reset overflow
+					j$('body').css('overflow','auto');
+				}
+			});
+			
+			// check and reprice pending line items
+            doCheckAndRollbackForecast();
+            
+		});
+		    
+ 		/**
+		 * Show the wait dialog
+		 */
+		function showWaitPanel(status) {
+			
+	      	j$("#waitPanel").html('<center><img src="{!URLFOR($Resource.Image_LoadingPage)}" /></center>');
+	      	j$("#waitPanel").dialog("open");
+	      	j$("#waitPanel").dialog("option" , "title" , "{!$Label.LoadingPage}" + status);
+	      	j$("#waitPanel").dialog("option", "position", "center");
+	      	
+	      	return false;
+	      	
+	   	}
+   		
+   		/**
+		 * Hide the wait dialog
+		 */
+   		function hideWaitPanel(){
+	    	// close the wait panel
+	      	j$("#waitPanel").dialog("close");
+	      
+	   	}
+	   			
+    	/**
+         * Check and Rollback the forecast
+         */
+        function doCheckAndRollbackForecast() {
+            
+            // register to invoke the function after the page load
+             var numPeriods = "{!NumOfPeriodsToRollback}";
+        
+            if (numPeriods <= 0) {
+                // no periods to forecast. go to finish page
+		        goToFinishPage();
+                
+                return;
+                
+            }
+
+            // get parameters
+            // current agreement id
+            var agreementId = "{!agreementId}";
+    
+            try {
+            
+                // rollback the forecast
+                doRollbackForecastRevenue(agreementId, numPeriods, 0);
+                
+            } catch(ex) {
+                // display the error
+                erroralert(cERROR_UNKNOWN, ex);
+            	// go to finish page
+                goToFinishPage();
+                
+            } 
+            
+        }
+        
+        /**
+         * Rollback the forecast for the current period
+         */
+        function doRollbackForecastRevenue(agreementId, numPeriods, currIndex) {
+            
+            try {
+                
+                if (currIndex < numPeriods) {
+                	
+                	// header
+                	var currPeriod = currIndex+1;
+                	var status = " (" + currPeriod + "/" + numPeriods + ")";
+                	
+                	 // show the modal panel
+                	showWaitPanel(status);
+                
+                    // STEP I - initialize the call
+                    {!ClassName}.doRollbackForecastRevenue(agreementId, function(result, event) {
+                    
+                        try {
+                            // check response status
+                            if (event.status) {
+                                // ok response, increment the index
+                                currIndex++;
+                                // check if done
+                                if (currIndex < numPeriods) {
+                                    // more to go
+                                    doRollbackForecastRevenue(agreementId, numPeriods, currIndex);
+                                    
+                                } else {
+                                     // go to finish page
+				   					 goToFinishPage();
+                                
+                                }
+                                
+                            } else {
+                                // throw exception
+                                alert(event.message);
+                                // hide modal panel
+                				hideWaitPanel();
+                                // go to finish page
+					            goToFinishPage();
+                            
+                            }
+                            
+                        } catch(ex) {
+                            // hide modal panel
+                            hideWaitPanel();
+                            // display the error
+                            erroralert(cERROR_UNKNOWN, ex);
+                            // go to finish page
+					        goToFinishPage();
+                              
+                        } 
+                        
+                    }, {escape:true});
+                  
+                 }
+                  
+            } catch(ex) {
+                 // hide modal panel
+                 hideWaitPanel();
+                 // display the error
+                 erroralert(cERROR_UNKNOWN, ex);
+                 // go to finish page
+  				 goToFinishPage();
+					            
+            } 
+            
+        }
+        
+        /**
+		 * Go to the finish page
+		 */
+		function goToFinishPage() {
+			// get the return id
+			var finishPage = "{!FinishPage}";
+			// go back to the detail page
+			navigateTo(finishPage);
+			
+		}
+	
+	</script>
+	
+	 <apex:form id="idRollbackForecast">
+		
+		<!--  required fields -->
+        <apex:outputText value="{!Apttus__APTS_Agreement__c.Apttus__Contract_Start_Date__c}" rendered="false" />
+        <apex:outputText value="{!Apttus__APTS_Agreement__c.Apttus__Contract_End_Date__c}" rendered="false" />
+        <apex:outputText value="{!Apttus__APTS_Agreement__c.Apttus_Revenue2__RevRec_Forecast_Period_Date__c}" rendered="false" />
+        <apex:outputText value="{!Apttus__APTS_Agreement__c.Apttus_Revenue2__RevRec_Forecast_Period_Number__c}" rendered="false" />
+       
+	</apex:form>
+	
+	<!-- This panel represents the waiting dialog that will pop up -->
+	<apex:outputPanel >
+		<div id="waitPanel"></div>
+	</apex:outputPanel>
+	
+	
+</apex:page>

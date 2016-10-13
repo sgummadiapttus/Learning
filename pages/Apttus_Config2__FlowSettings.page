@@ -1,0 +1,104 @@
+<!-- 
+    Apttus Config & Pricing
+    FlowSettings
+     
+    @2014-2015 Apttus Inc. All rights reserved.
+
+ -->
+<apex:page controller="Apttus_Config2.FlowSettingsController" 
+           standardStylesheets="true"
+           setup="true"
+           tabStyle="Apttus_Config2__ConfigFlow__c" >	
+    
+    <apex:stylesheet value="{!$Resource.Apttus_Config2__ConfigStyles}" />
+    
+    <style type="text/css">
+    
+		textarea {
+			width: 40%;
+		}
+		
+	</style>
+	
+	<apex:sectionHeader title="{!$Label.Apttus_Config2__CustomSettings}" 
+						subtitle="{!$ObjectType.Apttus_Config2__ConfigFlow__c.Label & ' ' & $Label.Apttus_Config2__Edit}" />
+											
+	<apex:form id="idFlowSO">
+		
+		<apex:pageBlock id="idFlowBlock" 
+						mode="edit" >
+			<apex:pageMessages />
+			<apex:pageBlockButtons location="top">
+				<apex:commandButton value="{!$Label.Apttus_Config2__Save}" 
+									action="{!doSave}" />
+				<apex:commandButton value="{!$Label.Apttus_Config2__Cancel}" 
+									action="{!doCancel}" />				
+				<apex:commandButton value="{!$Label.Apttus_Config2__Done}" 
+									action="{!doExit}" 
+									immediate="true" />
+			</apex:pageBlockButtons>
+		    
+			<apex:pageBlockSection id="idFlowSection" 
+		    					   title="{!$Label.Apttus_Config2__FlowSettings}" 
+		    					   columns="1" 
+		    					   collapsible="false" >
+				
+				<apex:inputField value="{!FlowInfo.flowSO.Name}" />
+				<apex:inputField value="{!FlowInfo.flowSO.Apttus_Config2__AssetsPage__c}" style="width:400px" />
+				<apex:inputField value="{!FlowInfo.flowSO.Apttus_Config2__CartPage__c}" style="width:400px" />
+				<apex:inputField value="{!FlowInfo.flowSO.Apttus_Config2__CatalogPage__c}" style="width:400px" />
+				<apex:inputField value="{!FlowInfo.flowSO.Apttus_Config2__OptionsPage__c}" style="width:400px" />
+				<apex:inputField value="{!FlowInfo.flowSO.Apttus_Config2__ProductAttributeDetailPage__c}" style="width:400px" />
+				
+		    </apex:pageBlockSection>
+	    	
+	    	<apex:pageBlockSection id="idFlowListSection" 
+		    					   columns="1" 
+		    					   collapsible="false" >
+		    					  
+		    	<apex:pageBlockTable value="{!FlowSettings}" 
+		    	 					 var="settings" 
+		    	 					 rowClasses="oddRow,evenRow" 
+		    	 					 rendered="{!HasFlowSettings}">
+		        	
+		        	<apex:column value="{!settings.flowSO.Name}" />
+					<apex:column value="{!settings.flowSO.Apttus_Config2__AssetsPage__c}" />
+					<apex:column value="{!settings.flowSO.Apttus_Config2__CartPage__c}" />
+					<apex:column value="{!settings.flowSO.Apttus_Config2__CatalogPage__c}" />
+					<apex:column value="{!settings.flowSO.Apttus_Config2__OptionsPage__c}" />
+					<apex:column value="{!settings.flowSO.Apttus_Config2__ProductAttributeDetailPage__c}" />
+					
+					<apex:column >
+						<apex:facet name="header">{!$Label.Apttus_Config2__Actions}</apex:facet>
+						<apex:PanelGrid columns="2" >
+							<apex:commandLink action="{!doEditFlow}" 
+											  reRender="idFlowBlock" 
+											  immediate="true">
+								<apex:param name="index" 
+											value="{!settings.FlowIndex}" />
+								<apex:image url="{!$Resource.Apttus_Config2__Image_Configure}" 
+		                       				title="{!$Label.Apttus_Config2__Edit}" 
+		                       				alt="{!$Label.Apttus_Config2__Edit}" />   
+							</apex:commandLink>	
+							<apex:commandLink action="{!doDeleteFlow}" 
+											  reRender="idFlowBlock" 
+											  immediate="true" onclick="if(!confirm('Are you sure you want to delete the Flow?')){return false;}">
+								<apex:param name="index" 
+											value="{!settings.FlowIndex}" />
+								<apex:image url="{!$Resource.Apttus_Config2__Image_Remove}" 
+		                       				title="{!$Label.Apttus_Config2__Remove}" 
+		                       				alt="{!$Label.Apttus_Config2__Remove}" />   
+							</apex:commandLink>		
+						</apex:PanelGrid>
+					</apex:column>	
+					
+		        </apex:pageBlockTable>
+		       	<apex:outputText value="{!$Label.Apttus_Config2__NoFlowsToDisplay}" 
+		       					 rendered="{!NOT(HasFlowSettings)}" />
+		       	 					   
+		   	</apex:pageBlockSection>
+		</apex:pageBlock>
+	
+	</apex:form>
+
+</apex:page>

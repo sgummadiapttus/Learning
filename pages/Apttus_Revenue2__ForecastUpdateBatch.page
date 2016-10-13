@@ -1,0 +1,27 @@
+<!-- 
+    Apttus Revenue Management
+    ForecastUpdateBatch
+     
+    @2009 Apttus Inc. All rights reserved.
+
+ -->
+<apex:page standardController="Apttus_Revenue2__RevRec_Period__c" 
+	  	   extensions="Apttus_Revenue2.ForecastUpdateBatchController" 
+           showHeader="true" sidebar="true" 
+           action="{!init}" >	
+           
+	<apex:sectionHeader title="Forecast Update"></apex:sectionHeader>
+	
+	<apex:form >
+		<!--  required fields -->
+		<apex:outputText value="{!Apttus_Revenue2__RevRec_Period__c.Apttus_Revenue2__Current_Period_Date__c}" rendered="false"/>
+		
+		<apex:pageBlock >
+			<apex:pageMessages />
+			<apex:outputPanel >
+				<apex:outputText style="font-weight: bold" value="{!statusText}" />
+			</apex:outputPanel>    
+		</apex:pageBlock>
+	</apex:form>
+
+</apex:page>

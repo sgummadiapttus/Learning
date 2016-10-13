@@ -1,0 +1,35 @@
+<!-- 
+    Apttus Revenue Management
+    CreateForecastSnapshotBatch
+     
+    @2009-2011 Apttus Inc. All rights reserved.
+
+ -->
+<apex:page standardController="Apttus_Revenue2__RevRec_Period__c" 
+	  	   extensions="Apttus_Revenue2.CreateForecastSnapshotBatchController" 
+           showHeader="true" 
+           sidebar="true" >	
+           
+	<apex:sectionHeader title="Forecast Snapshot"></apex:sectionHeader>
+	
+	<apex:form >
+		<!--  required fields -->
+		<apex:outputText value="{!Apttus_Revenue2__RevRec_Period__c.Apttus_Revenue2__Current_Period_Date__c}" rendered="false"/>
+		
+		<apex:pageBlock id="idPageBlock" >
+			<apex:pageMessages />
+			<apex:panelGrid columns="3" cellpadding="2">
+				<apex:outputLabel value="Snapshot Name   " for="idSnapshotName" style="font-weight: bold;"></apex:outputLabel>
+				<apex:inputText id="idSnapshotName" value="{!snapshotName}" size="100" style="height:15px;font-size:13px;"></apex:inputText>
+				<apex:commandButton action="{!doSubmitJob}" value=" Submit " rerender="idPageBlock" disabled="{!IsJobSubmitted}" ></apex:commandButton>
+			</apex:panelGrid>
+			<p/>
+			<p/>
+			<p/>
+			<apex:outputPanel id="idOutputPanel" rendered="{!IsJobSubmitted}">
+				<apex:outputText style="font-weight: bold" value="{!statusText}" />
+			</apex:outputPanel>      
+		</apex:pageBlock>
+	</apex:form>
+
+</apex:page>

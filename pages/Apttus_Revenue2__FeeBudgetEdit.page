@@ -1,0 +1,42 @@
+<!-- 
+ *
+ *	Apttus Revenue Management
+ *	FeeBudgetEdit
+ *	 
+ *	@2009-2011 Apttus Inc. All rights reserved.
+ *
+ -->
+<apex:page standardController="Apttus_Revenue2__Agreement_Fee__c"
+		   extensions="Apttus_Revenue2.FeeBudgetEditController" 
+		   showHeader="true" 
+		   sidebar="true"
+		   tabStyle="Apttus__APTS_Agreement__c" 
+		   action="{!init}" >
+	<apex:form >
+		<apex:pageBlock title="Input Fee Budget" id="thePageBlock">
+			<apex:pageMessages />
+			<apex:pageBlockButtons >
+				<apex:commandButton id="cmdButtonDoSave" 
+									action="{!doSave}" 
+									value="Save"
+					 				rendered="{!canEdit}" />
+				<apex:commandButton id="cmdButtonDoCancel" 
+									action="{!doCancel}" 
+									value="Cancel" />
+			</apex:pageBlockButtons>
+
+			<apex:pageBlockSection title="Fee Details">
+				<apex:outputField value="{!fee.Apttus_Revenue2__Revenue_Type__c}" />
+				<apex:outputField value="{!fee.Apttus_Revenue2__Agreement__c}" />
+				<apex:outputField value="{!fee.Apttus_Revenue2__Revenue_Subtype__c}" />
+				<apex:outputField value="{!fee.Apttus_Revenue2__Fee_Type__c}" />
+				<apex:outputField value="{!fee.Apttus_Revenue2__RevRec_Rule__c}" />
+			</apex:pageBlockSection>
+
+			<!-- Budget Entry -->
+			<c:FeeBudgetEdit scheduleList="{!scheduleList}"
+						     currencyHeader="{!currencyHeader}" 
+							 rendered="{!canEdit}" />
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

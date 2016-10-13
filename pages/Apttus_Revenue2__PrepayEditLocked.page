@@ -1,0 +1,74 @@
+<!-- 
+ *
+ *	Apttus Revenue Management
+ *	PrepayEditLocked
+ *	 
+ *	@2009 Apttus Inc. All rights reserved.
+ *
+ -->
+<apex:page standardController="Apttus_Revenue2__Agreement_Prepay__c"
+		   extensions="Apttus_Revenue2.PrepayEditLockedController" 
+		   showHeader="true"
+		   sidebar="true" 
+		   tabStyle="Apttus__APTS_Agreement__c">
+
+	<apex:form >
+
+		<apex:pageBlock title="Prepay and Associations">
+			<apex:pageMessages />
+
+			<apex:pageBlockButtons >
+				<apex:commandButton action="{!doSaveLocked}" value="Save" id="cmdButtonDoSaveLocked" />
+				<apex:commandButton action="{!doCancel}" value="Cancel" id="cmdButtonDoCancel" />
+			</apex:pageBlockButtons>
+
+			<apex:pageBlockSection title="Prepay Details" columns="1">
+				<apex:outputField value="{!prepay.Apttus_Revenue2__Agreement__c}" />
+				<apex:outputField value="{!prepay.Apttus_Revenue2__Prepaid_Amount__c}" />
+				<apex:outputField value="{!prepay.Apttus_Revenue2__Prepaid_Units2__c}" />
+				<apex:inputField value="{!prepay.Apttus_Revenue2__Revenue_Type__c}" />
+				<apex:inputField value="{!prepay.Apttus_Revenue2__Revenue_Subtype__c}" />
+				<apex:outputField value="{!prepay.Apttus_Revenue2__RevRec_Rule__c}" />
+				<apex:inputField value="{!prepay.Apttus_Revenue2__Invoice_Number__c}" />
+				<apex:inputField value="{!prepay.Apttus_Revenue2__Invoice_Date__c}" />
+				<apex:inputField value="{!prepay.Apttus_Revenue2__Due_Date__c}" />
+				<apex:inputField value="{!prepay.Apttus_Revenue2__Comments__c}" style="width: 300px;" />
+			</apex:pageBlockSection>
+
+			<apex:pageBlockSection title="Start Date">
+				<apex:outputField value="{!prepay.Apttus_Revenue2__Is_Start_Date_Milestone_Based__c}" />
+				<apex:outputField value="{!prepay.Apttus_Revenue2__Start_Milestone_Expected_Date__c}" />
+				<apex:outputField value="{!prepay.Apttus_Revenue2__Fixed_Start_Date__c}" />
+				<apex:outputField value="{!prepay.Apttus_Revenue2__Start_Milestone_Actual_Date__c}" />
+				<apex:outputField value="{!prepay.Apttus_Revenue2__Actual_Start_Date__c}" />
+			</apex:pageBlockSection>
+
+			<apex:pageBlockSection title="End Date">
+				<apex:outputField value="{!prepay.Apttus_Revenue2__Is_End_Date_Milestone_Based__c}" />
+				<apex:outputField value="{!prepay.Apttus_Revenue2__End_Milestone_Actual_Date__c}" />
+				<apex:outputField value="{!prepay.Apttus_Revenue2__Fixed_End_Date__c}" />
+				<apex:outputField value="{!prepay.Apttus_Revenue2__End_Milestone_Expected_Date__c}" />
+				<apex:outputField value="{!prepay.Apttus_Revenue2__Actual_End_Date__c}" />
+			</apex:pageBlockSection>
+
+		</apex:pageBlock>
+
+	</apex:form>
+
+	<apex:pageBlock title="Prepay Associations">
+
+		<c:RevenueSchedule revScheduleList="{!revScheduleList}" 
+						   hasRevSchedules="{!hasRevSchedules}" 
+						   msgNoRevSchedules="{!msgNoRevSchedules}" />
+
+		<c:ApplicableFeesView feeList="{!feeList}" 
+							  hasFees="{!hasFees}"
+							  msgNoFees="{!msgNoFees}" />
+
+		<c:ApplicableTrueupsView trueupList="{!trueupList}"
+								 hasTrueups="{!hasTrueups}" 
+								 msgNoTrueups="{!msgNoTrueups}" />
+
+	</apex:pageBlock>
+
+</apex:page>

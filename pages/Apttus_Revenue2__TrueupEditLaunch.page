@@ -1,0 +1,15 @@
+<!-- 
+ *
+ *	Apttus Revenue Management
+ *	TrueupEditLaunch
+ *	 
+ *	@2009 Apttus Inc. All rights reserved.
+ *
+ -->
+<apex:page standardController="Apttus_Revenue2__Agreement_Trueup__c"
+		   extensions="Apttus_Revenue2.TrueupEditLaunchController" 
+		   showHeader="false" 
+		   sidebar="false"
+		   tabStyle="Apttus__APTS_Agreement__c" 
+		   action="{!doSelectPage}">
+</apex:page>

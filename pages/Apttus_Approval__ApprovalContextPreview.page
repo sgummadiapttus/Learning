@@ -1,0 +1,167 @@
+<!-- 
+	/**
+	 *	Apttus Approvals Management
+	 *	ApprovalContextPreview
+	 *	 
+	 *	@2011-2016 Apttus Inc. All rights reserved.
+	 */
+-->
+<apex:page standardController="Apttus_Approval__Approval_Request__c"
+		extensions="Apttus_Approval.ApprovalContextPreviewController" 
+		recordSetVar="ApprovalReqList" 
+		action="{!doPreviewApprovalRequests}">
+		
+	<apex:includescript value="{!URLFOR($Resource.Apttus_Approval__ApprovalsSF1Assets, 'js/jquery.js')}" />
+	<script type="text/javascript">
+		var j$ = jQuery.noConflict();
+
+		j$('form').submit(function(){
+			j$(this).find(':submit').prop('disabled', true);
+		});
+	</script>
+
+	<script type="text/javascript" src="/soap/ajax/22.0/connection.js"></script>
+    <script type="text/javascript" src="/soap/ajax/22.0/apex.js"></script>
+    <apex:include pageName="Apttus_Approval__ApprovalsJSLibInclude" />
+    
+    <apex:stylesheet value="{!URLFOR($Resource.Apttus_Approval__YUILibrary, '/yui/build/assets/skins/sam/skin.css')}" />
+ 
+    <apex:includescript value="{!URLFOR($Resource.Apttus_Approval__YUILibrary, '/yui/build/yahoo-dom-event/yahoo-dom-event.js')}" />
+    <apex:includescript value="{!URLFOR($Resource.Apttus_Approval__YUILibrary, '/yui/build/dragdrop/dragdrop-min.js')}" />
+    <apex:includescript value="{!URLFOR($Resource.Apttus_Approval__YUILibrary, '/yui/build/container/container-min.js')}" />
+    <apex:includescript value="{!URLFOR($Resource.Apttus_Approval__YUILibrary, '/yui/build/animation/animation-min.js')}" />
+    
+    <script>
+    
+        // Create a namespace for our custom functions
+        YAHOO.namespace("force.com");
+        
+        // wait panel
+        
+        /**
+         * Builds the wait panel.
+         */
+        YAHOO.force.com.buildWaitPanel = function() {
+            document.body.className = document.body.className + " yui-skin-sam";
+            YAHOO.force.com.waitPanel = new YAHOO.widget.Panel(
+                "waitPanel",  // The id of our dialog container
+                { 
+                        width           :   "300px", // You can play with this until it's right
+                        visible         :   false,   // Should be invisible when rendered
+                        draggable       :   false,   // Make the dialog draggable
+                        close           :   false,   // Don't include a close title button
+                        modal           :   true,    // Make it modal
+                        fixedCenter     :   true,    // Keep centered if window is scrolled
+                        zindex          :   40,      // Make sure it's on top of everything
+                        constraintoviewport: true,
+                        
+                        // This line adds the appear/disapper fade effect
+                        effect          :   {effect:YAHOO.widget.ContainerEffect.FADE,duration:0.25}
+                                    
+                }
+            );
+            
+            // header
+            YAHOO.force.com.waitPanel.setHeader("{!$Label.SubmittingApprovals2}");
+            // set image
+            YAHOO.force.com.waitPanel.setBody('<center><img src="{!URLFOR($Resource.Image_LoadingPage)}" /></center>');
+            // Render the dialog to the document.body level of the DOM
+            YAHOO.force.com.waitPanel.render(document.body);
+            
+        }
+        
+        /**
+         * Callback when the submit action button is clicked
+         */
+        function onSubmitActionClick() {
+            // show the modal panel
+            YAHOO.force.com.waitPanel.show();
+            // return false to allow the action to proceed
+            return false;
+            
+        }
+        
+        /**
+         * Callback when the submit action is completed
+         */
+        function onSubmitActionComplete() {
+            // hide the modal panel
+            YAHOO.force.com.waitPanel.hide();
+            
+        }
+        
+        // Function called when the DOM is ready to create the dialog,
+        // render the dialog into the document body, add our dialog skin
+        // css to the body tag, and wire up the buttons on our dialog   
+        YAHOO.force.com.onDOMReady = function() {
+            
+            // build the wait panel
+            YAHOO.force.com.buildWaitPanel();
+            
+        }
+        
+        // build the tree as soon as the DOM is in a usable state
+        YAHOO.util.Event.onDOMReady(YAHOO.force.com.onDOMReady);    
+        
+    </script>
+
+    <apex:form >
+    
+        <apex:pageBlock title="{!pageTitle}">
+        
+            <apex:pageMessages />
+            
+            <apex:pageBlockButtons >
+                <apex:outputPanel >
+                    <apex:commandButton action="{!doSubmitWithAttachments}"
+                    					onclick="onSubmitActionClick();"
+                                        oncomplete="onSubmitActionComplete();"
+                                        value="{!$Label.Apttus_Approval__SubmitWithAttachments}" 
+                                        rendered="{!showApprovals}"/>
+                    <apex:commandButton action="{!doSubmitApprovalRequests}"
+                    					onclick="onSubmitActionClick();"
+                                        oncomplete="onSubmitActionComplete();"
+                                        value="{!$Label.Apttus_Approval__Submit}" 
+                                        rendered="{!showApprovals}"/>
+                    <apex:commandButton action="{!doCancel}" value="{!$Label.Apttus_Approval__Cancel}" />
+                </apex:outputPanel>
+            </apex:pageBlockButtons>
+            
+			<apex:pageBlockTable value="{!approvals}" var="request" rendered="{!showApprovals}">
+	
+				<apex:column value="{!request.Apttus_Approval__Step_Name__c}"/>	
+					
+				<apex:column value="{!request.Apttus_Approval__StepSequenceString__c}"/>	
+					
+				<apex:column value="{!request.Apttus_Approval__Sequence__c}"/>	
+						
+				<apex:column headerValue="{!$Label.Apttus_Approval__AssignedTo}">
+				
+					<apex:outputLink rendered="{!request.Apttus_Approval__Assigned_To_Type__c = 'Queue'}"
+						value="{!queueURL}">{!request.Apttus_Approval__Assigned_To_Name__c}
+						<apex:param name="id" value="{!request.Apttus_Approval__Assigned_To_Id__c}"/>
+						<apex:param name="setupid" value="Queues"/>
+					</apex:outputLink>
+					
+					<apex:outputLink rendered="{!request.Apttus_Approval__Assigned_To_Type__c != 'Queue'}"
+						value="/{!request.Apttus_Approval__Assigned_To_Id__c}">
+							{!request.Apttus_Approval__Assigned_To_Name__c}
+					</apex:outputLink>
+	
+				</apex:column>
+				
+				<!-- apex:column value="{!request.SubstepSequence__c}"/-->
+				<!-- apex:column value="{!request.SubstepDependsOn__c}"/-->	
+				<!-- apex:column value="{!request.SubprocessSequence__c}"/-->	
+				<!-- apex:column value="{!request.SubprocessDependsOn__c}"/-->	
+				<!-- apex:column value="{!request.DependsOn__c}"/-->	
+				
+				<apex:column value="{!request.Apttus_Approval__Request_Comments__c}"/>
+				
+			</apex:pageBlockTable>
+			
+		</apex:pageBlock>
+            
+    </apex:form>
+    
+</apex:page>

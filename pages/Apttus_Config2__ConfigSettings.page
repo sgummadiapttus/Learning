@@ -1,0 +1,42 @@
+<!-- 
+    Apttus Config & Pricing
+    ConfigSettings
+     
+    @2011-2012 Apttus Inc. All rights reserved.
+
+ -->
+<apex:page cache="false"
+           standardStylesheets="true"
+           setup="true"
+           tabStyle="ConfigSettings__tab">	
+    
+    <apex:sectionHeader title="{!$Label.Apttus_Config2__ConfigSettings}" />
+	
+	<apex:pageBlock title="{!$Label.Apttus_Config2__ConfigSettings}" 
+					mode="edit" >
+		
+		<apex:pageBlockSection columns="2" >
+			<apex:outputLink title="{!$Label.Apttus_Config2__FlowSettings}" 
+			   	  			 value="{!$Page.Apttus_Config2__FlowSettings}">{!$Label.Apttus_Config2__FlowSettings}</apex:outputLink>
+			<apex:pageBlockSectionItem />
+			<apex:outputLink title="{!$Label.Apttus_Config2__DisplayColumnSettings}" 
+			   	  			 value="{!$Page.Apttus_Config2__DisplayColumnSettings}">{!$Label.Apttus_Config2__DisplayColumnSettings}</apex:outputLink>
+			<apex:outputLink title="{!$Label.Apttus_Config2__SelectProductsSettings}" 
+			   	  			 value="{!$Page.Apttus_Config2__SelectProductsSettings}">{!$Label.Apttus_Config2__CatalogPageSettings}</apex:outputLink>
+			<apex:outputLink title="{!$Label.Apttus_Config2__DisplayActionSettings}" 
+			   	  			 value="{!$Page.Apttus_Config2__DisplayActionSettings}">{!$Label.Apttus_Config2__DisplayActionSettings}</apex:outputLink>
+			<apex:outputLink title="{!$Label.Apttus_Config2__SelectBundleOptionsSettings}" 
+			   	  			 value="{!$Page.Apttus_Config2__SelectBundleOptionsSettings}">{!$Label.Apttus_Config2__BundlePageSettings}</apex:outputLink>
+			<apex:outputLink title="{!$Label.Apttus_Config2__SystemProperties}" 
+			   	  			 value="{!$Page.Apttus_Config2__SystemProperties}">{!$Label.Apttus_Config2__SystemProperties}</apex:outputLink>
+			<apex:outputLink title="{!$Label.Apttus_Config2__InstalledProductsSettings}" 
+			   	  			 value="{!$Page.Apttus_Config2__InstalledProductsSettings}">{!$Label.Apttus_Config2__InstalledProductsSettings}</apex:outputLink>
+			<apex:outputLink title="{!$Label.Apttus_Config2__SmartSearchSettings}"
+							 value="{!$Page.Apttus_Config2__SmartSearchSettings}">{!$Label.Apttus_Config2__SmartSearchSettings}</apex:outputLink>
+			<apex:outputLink title="{!$Label.Apttus_Config2__FieldSetSettings}"
+							 value="{!$Page.Apttus_Config2__FieldSetAdmin}">{!$Label.Apttus_Config2__FieldSetSettings}</apex:outputLink>
+							 
+		</apex:pageBlockSection>
+		
+	</apex:pageBlock>
+</apex:page>

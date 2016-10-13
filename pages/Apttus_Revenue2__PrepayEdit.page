@@ -1,0 +1,90 @@
+<!-- 
+ *
+ *	Apttus Revenue Management
+ *	PrepayEdit
+ *	 
+ *	@2009 Apttus Inc. All rights reserved.
+ *
+ -->
+<apex:page standardController="Apttus_Revenue2__Agreement_Prepay__c"
+		   extensions="Apttus_Revenue2.PrepayEditController" 
+		   showHeader="true" 
+		   sidebar="true"
+		   tabStyle="Apttus__APTS_Agreement__c">
+
+	<apex:form >
+		<apex:pageBlock title="Prepay and Associations" mode="{!pageMode}" id="thePageBlock" >
+			<apex:pageMessages />
+
+			<!-- BEGIN SECTION FOR BUTTONS -->
+			<apex:pageBlockButtons >
+				<apex:commandButton action="{!doSave}" value="Save" id="cmdButtonDoSave" />
+				<apex:commandButton action="{!doSaveAndNew}" value="Save & New" id="cmdButtonDoSaveAndNew" />
+				<apex:commandButton action="{!doCancel}" value="Cancel" id="cmdButtonDoCancel" />
+			</apex:pageBlockButtons>
+			<!-- END SECTION FOR BUTTONS -->
+
+			<!-- BEGIN SECTION FOR PREPAY DETAILS -->
+			<apex:pageBlockSection title="Prepay Details" id="prepaySection" columns="1" >
+				<apex:outputField value="{!prepay.Apttus_Revenue2__Agreement__c}" />
+				<apex:inputField value="{!prepay.Apttus_Revenue2__Prepaid_Amount__c}" />
+				<apex:inputField value="{!prepay.Apttus_Revenue2__Prepaid_Units2__c}" />
+				<apex:inputField value="{!prepay.Apttus_Revenue2__Revenue_Type__c}" />
+				<apex:inputField value="{!prepay.Apttus_Revenue2__Revenue_Subtype__c}" />
+				<apex:inputField value="{!prepay.Apttus_Revenue2__RevRec_Rule__c}" />
+				<apex:inputField value="{!prepay.Apttus_Revenue2__Invoice_Number__c}" />
+				<apex:inputField value="{!prepay.Apttus_Revenue2__Invoice_Date__c}" />
+				<apex:inputField value="{!prepay.Apttus_Revenue2__Due_Date__c}" />
+				<apex:inputField value="{!prepay.Apttus_Revenue2__Comments__c}" style="width: 300px;" />
+			</apex:pageBlockSection>
+			<!-- END SECTION FOR PREPAY DETAILS -->
+
+			<!-- BEGIN SECTION FOR START DATE -->
+			<apex:outputPanel id="startDateSection">
+				<apex:pageBlockSection title="Start Date">
+					<apex:inputField value="{!prepay.Apttus_Revenue2__Is_Start_Date_Milestone_Based__c}">
+						<apex:actionSupport event="onclick" 
+											reRender="startDateSection"
+											status="startDateSectionStatus" />
+                        &nbsp;&nbsp; 
+                        <b><apex:actionStatus startText="please wait..." id="startDateSectionStatus" /> </b>
+					</apex:inputField>
+					<apex:pageBlockSectionItem rendered="{!prepay.Apttus_Revenue2__Is_Start_Date_Milestone_Based__c == true}">
+						<apex:outputLabel for="selectStartMilestone">Milestone &nbsp;</apex:outputLabel>
+						<apex:selectList value="{!prepay.Apttus_Revenue2__Start_Milestone__c}" size="1" id="selectStartMilestone">
+							<apex:selectOptions value="{!milestoneNames}" />
+							<apex:actionSupport event="onchange" 
+												reRender="startDateSection"
+												status="startDateSectionStatus" />
+						</apex:selectList>
+					</apex:pageBlockSectionItem>
+					<apex:outputField value="{!startMilestone.Apttus_Revenue2__Expected_Date__c}"
+									  rendered="{!prepay.Apttus_Revenue2__Is_Start_Date_Milestone_Based__c == true}" />
+					<apex:outputField value="{!startMilestone.Apttus_Revenue2__Actual_Date__c}"
+									  rendered="{!prepay.Apttus_Revenue2__Is_Start_Date_Milestone_Based__c == true}" />
+					<apex:inputField value="{!prepay.Apttus_Revenue2__Fixed_Start_Date__c}"
+									 rendered="{!prepay.Apttus_Revenue2__Is_Start_Date_Milestone_Based__c == false}" />
+				</apex:pageBlockSection>
+			</apex:outputPanel>
+			<!-- END SECTION FOR START DATE -->
+
+			<!-- BEGIN SECTION FOR END DATE -->
+			<apex:outputPanel id="endDateSection">
+				<apex:pageBlockSection title="End Date">
+					<apex:inputField value="{!prepay.Apttus_Revenue2__Fixed_End_Date__c}" />
+				</apex:pageBlockSection>
+			</apex:outputPanel>
+			<!-- END SECTION FOR END DATE -->
+
+			<c:ApplicableFeesEdit feeList="{!feeList}" 
+								  hasFees="{!hasFees}"
+								  msgNoFeesForAgmt="{!msgNoFeesForAgmt}" />
+			<c:ApplicableTrueupsEdit trueupList="{!trueupList}"
+									 hasTrueups="{!hasTrueups}"
+									 msgNoTrueupsForAgmt="{!msgNoTrueupsForAgmt}" />
+			
+			<c:ActivityHistory activityList="{!activityList}"/>
+			
+		</apex:pageBlock>
+	</apex:form>
+</apex:page>

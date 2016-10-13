@@ -1,0 +1,35 @@
+<!-- 
+ *
+ *	Apttus Revenue Management
+ *	PrepayView
+ *	 
+ *	@2009 Apttus Inc. All rights reserved.
+ *
+ -->
+<apex:page standardController="Apttus_Revenue2__Agreement_Prepay__c"
+		   extensions="Apttus_Revenue2.PrepayViewController" 
+		   showHeader="true" 
+		   sidebar="true"
+		   tabStyle="Apttus__APTS_Agreement__c">
+
+	<apex:detail subject="{!$CurrentPage.parameters.id}" relatedList="false" title="false" />
+
+	<apex:pageBlock title="Prepay Associations" mode="{!pageMode}">
+
+		<c:RevenueSchedule revScheduleList="{!revScheduleList}" 
+						   hasRevSchedules="{!hasRevSchedules}" 
+						   msgNoRevSchedules="{!msgNoRevSchedules}" />
+
+		<c:ApplicableFeesView feeList="{!feeList}" 
+							  hasFees="{!hasFees}"
+							  msgNoFees="{!msgNoFees}" />
+
+		<c:ApplicableTrueupsView trueupList="{!trueupList}"
+								 hasTrueups="{!hasTrueups}" 
+								 msgNoTrueups="{!msgNoTrueups}" />
+			
+		<c:ActivityHistory activityList="{!activityList}"/>
+		
+	</apex:pageBlock>
+	
+</apex:page>

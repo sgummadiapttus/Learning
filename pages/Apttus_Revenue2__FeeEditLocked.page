@@ -1,0 +1,100 @@
+<!-- 
+ *
+ *	Apttus Revenue Management
+ *	FeeEditLocked
+ *	 
+ *	@2009-2011 Apttus Inc. All rights reserved.
+ *
+ -->
+<apex:page standardController="Apttus_Revenue2__Agreement_Fee__c"
+		   extensions="Apttus_Revenue2.FeeEditLockedController" 
+		   showHeader="true" 
+		   sidebar="true"
+		   tabStyle="Apttus__APTS_Agreement__c">
+
+	<apex:form >
+		<apex:pageBlock title="Fees and Associations">
+			<apex:pageMessages />
+
+			<apex:pageBlockButtons >
+				<apex:commandButton id="cmdButtonDoSaveLocked" 
+									action="{!doSaveLocked}" 
+									value="Save"  />
+				<apex:commandButton id="cmdButtonDoCancel" 
+									action="{!doCancel}" 
+									value="Cancel"  />
+			</apex:pageBlockButtons>
+
+			<apex:pageBlockSection title="Fee Details" columns="1">
+				<apex:outputField value="{!fee.Apttus_Revenue2__Agreement__c}" />
+				<apex:inputField value="{!fee.Apttus_Revenue2__Revenue_Type__c}" />
+				<apex:inputField value="{!fee.Apttus_Revenue2__Revenue_Subtype__c}" />
+				<apex:outputField value="{!fee.Apttus_Revenue2__Fee_Type__c}" />
+				<apex:outputField value="{!fee.Apttus_Revenue2__Flat_Fee__c}" 
+								  rendered="{!fee.Apttus_Revenue2__Fee_Type__c = 'Flat Fee'}" />
+				<apex:outputField value="{!fee.Apttus_Revenue2__Unit_Price__c}"
+								  rendered="{!(fee.Fee_Type__c = 'Per Unit') || 
+								  			  (fee.Fee_Type__c = 'Per User') ||
+								  			  (fee.Fee_Type__c = 'Revenue Share')}" />
+				<apex:outputField value="{!fee.Apttus_Revenue2__Percent_of_Revenue__c}"
+								  rendered="{!(fee.Fee_Type__c = '% of Revenue') || 
+								  			  (fee.Fee_Type__c = 'Revenue Share')}" />
+				<apex:outputField value="{!fee.Apttus_Revenue2__RevRec_Rule__c}" />
+				<apex:inputField value="{!fee.Apttus_Revenue2__Invoice_Number__c}" />
+				<apex:inputField value="{!fee.Apttus_Revenue2__Invoice_Date__c}" />
+				<apex:inputField value="{!fee.Apttus_Revenue2__Comments__c}" style="width: 300px;" />
+			</apex:pageBlockSection>
+
+			<apex:pageBlockSection title="Effectivity Period">
+				<apex:outputField value="{!fee.Apttus_Revenue2__One_Time_Recurring__c}" />
+				<apex:outputField value="{!fee.Apttus_Revenue2__Frequency__c}" />
+			</apex:pageBlockSection>
+
+			<apex:pageBlockSection title="Start Date">
+				<apex:outputField value="{!fee.Apttus_Revenue2__Is_Start_Date_Milestone_Based__c}" />
+				<apex:outputField value="{!fee.Apttus_Revenue2__Start_Milestone_Expected_Date__c}" />
+				<apex:outputField value="{!fee.Apttus_Revenue2__Fixed_Start_Date__c}" />
+				<apex:outputField value="{!fee.Apttus_Revenue2__Start_Milestone_Actual_Date__c}" />
+				<apex:outputField value="{!fee.Apttus_Revenue2__Actual_Start_Date__c}" />
+			</apex:pageBlockSection>
+
+			<apex:pageBlockSection title="End Date">
+				<apex:outputField value="{!fee.Apttus_Revenue2__Is_End_Date_Milestone_Based__c}" />
+				<apex:outputField value="{!fee.Apttus_Revenue2__End_Milestone_Actual_Date__c}" />
+				<apex:outputField value="{!fee.Apttus_Revenue2__Fixed_End_Date__c}" />
+				<apex:outputField value="{!fee.Apttus_Revenue2__End_Milestone_Expected_Date__c}" />
+				<apex:outputField value="{!fee.Apttus_Revenue2__Actual_End_Date__c}" />
+			</apex:pageBlockSection>
+		</apex:pageBlock>
+
+	</apex:form>
+
+	<apex:pageBlock title="Fee Associations">
+
+		<c:RevenueSchedule revScheduleList="{!revScheduleList}" 
+						   hasRevSchedules="{!hasRevSchedules}" 
+						   msgNoRevSchedules="{!msgNoRevSchedules}" />	
+
+		<c:ApplicableProductsView productList="{!productList}"
+								  hasProducts="{!hasProducts}" 
+								  msgNoProducts="{!msgNoProducts}" />
+
+		<c:ApplicablePrepaysView prepayList="{!prepayList}"
+								 hasPrepays="{!hasPrepays}" 
+								 msgNoPrepays="{!msgNoPrepays}" />
+
+		<c:ApplicableTrueupsView trueupList="{!trueupList}"
+								 hasTrueups="{!hasTrueups}" 
+								 msgNoTrueups="{!msgNoTrueups}" />
+
+		<c:RelatedFeesView relFeeList="{!relFeeList}"
+						   hasRelFees="{!hasRelFees}" 
+						   feeType="{!fee.Apttus_Revenue2__Fee_Type__c}"
+						   msgNoRelatedFees="{!msgNoRelatedFees}" />
+
+		<c:FeeTierView tierList="{!tierList}" 
+					   feeType="{!fee.Apttus_Revenue2__Fee_Type__c}" />
+		
+	</apex:pageBlock>
+
+</apex:page>

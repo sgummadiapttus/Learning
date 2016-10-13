@@ -1,0 +1,6 @@
+<apex:page standardStylesheets="false" showHeader="false" sidebar="false">
+    <apex:form >
+        <apex:commandButton value="Reassign" styleClass="slds-button--neutral slds-button" style="margin-left:10%;margin-top:20%"/>
+    </apex:form>
+    <apex:stylesheet value="{!URLFOR($Resource.ECMS_SLDS, 'assets/styles/salesforce-lightning-design-system.css')}" id="slds_class"/>
+</apex:page>

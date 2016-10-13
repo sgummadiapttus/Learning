@@ -1,0 +1,54 @@
+<!-- 
+    Apttus Billing 
+    PreviewFilteredContacts
+ 
+    @2013-2015 Apttus Inc. All rights reserved.
+ -->
+<apex:page tabStyle="{!IF(tabStyleStr <> null, tabStyleStr, 'Account')}" controller="PreviewFilteredContactsController" readOnly="true">
+  <apex:sectionHeader rendered="{!isAccount}" title="{!$Label.Apttus_Billing__BillingContacts}" subtitle="{!$ObjectType.Account.label} - {!acctName}"/>
+  <apex:sectionHeader rendered="{!NOT(isAccount)}" title="{!$Label.Apttus_Billing__BillingContacts}" subtitle="{!$ObjectType.Apttus_Config2__AccountLocation__c.label} - {!loctnName}"/>
+      <apex:pageMessages /> 
+      <apex:form id="fltrdContactsForm">
+      <apex:pageBlock title="{!$ObjectType.Contact.labelPlural}" id="contctPgBlk">          
+          <apex:pageBlockButtons >
+             <apex:commandButton id="toActBtn" rendered="{!isAccount}" value="{!$Label.Apttus_Billing__BackTo} {!$ObjectType.Account.label}" action="{!backToAccount}"/>
+             <apex:commandButton id="toActFiltrBtn" rendered="{!isAccount}" value="{!$Label.Apttus_Billing__BackTo} {!$Label.Apttus_Billing__AccountFilterCriteria}" action="{!backToAccountContactFilters}" />
+             <apex:commandButton id="toLoctnBtn" rendered="{!NOT(isAccount)}" value="{!$Label.Apttus_Billing__BackTo} {!$ObjectType.Apttus_Config2__AccountLocation__c.label}" action="{!backToLocation}"/>
+             <apex:commandButton id="toLoctnFiltrBtn" rendered="{!NOT(isAccount)}" value="{!$Label.Apttus_Billing__BackTo} {!$Label.Apttus_Billing__AccountFilterCriteria}" action="{!backToLocationContactFilters}" />            
+          </apex:pageBlockButtons>           
+          <apex:outputPanel rendered="{!IF(filteredContacts.size == 0, true, false)}">
+             <apex:outputText value=" {!$Label.Apttus_Billing__Norecordsfound}. "/>
+          </apex:outputPanel>                           
+          <apex:pageBlockTable title="Contacts" value="{!filteredContacts}" var="contct" id="contTable" rendered="{!IF(filteredContacts.size > 0, true, false)}">
+             <apex:column value="{!contct.Name}"/>
+             <apex:column value="{!contct.Email}"/>
+             <apex:column value="{!contct.Phone}"/>
+             <apex:column value="{!contct.Firstname}"/>
+             <apex:column value="{!contct.Lastname}"/>
+          </apex:pageBlockTable>     
+	      <apex:outputPanel layout="none" rendered="{!IF(filteredContacts.size > 0, true, false)}">
+	           <apex:outputPanel style="float:left;">  
+	              <apex:outputText value=" {!$Label.Apttus_Billing__View} "/>
+	              <apex:selectList id="limitPkLst" style="margin-bottom:4px;" value="{!limitSize}" size="1" multiselect="false">
+	                 <apex:selectOptions value="{!pageSizeValues}" />
+	                 <apex:actionSupport event="onchange" reRender="bsPgBlk" action="{!doPageSizeChange}"/>
+	              </apex:selectList>
+	              <apex:outputText value=" {!$Label.Apttus_Billing__recordsperpage}." />
+	           </apex:outputPanel> 
+	         <apex:outputPanel >
+	            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	         </apex:outputPanel>
+	         <apex:commandButton value="{!$Label.Apttus_Billing__First}" rerender="bsPgBlk" action="{!firstPage}" disabled="{!IF(offsetSize == 0, true, false)}"/>
+	         <apex:commandButton value="{!$Label.Apttus_Billing__Previous}" rerender="bsPgBlk" action="{!previousPage}" disabled="{!IF(offsetSize == 0, true, false)}"/>
+	         <apex:outputText value=" {!$Label.Apttus_Billing__Showingpage}  {!currentPage}   {!$Label.Apttus_Billing__Of}   {!numPages}  " />
+	         <apex:commandButton value="{!$Label.Apttus_Billing__Next}" rerender="bsPgBlk" action="{!nextPage}" disabled="{!IF(offsetSize + limitSize > totalRecs, true, false)}"/>
+	         <apex:commandButton value="{!$Label.Apttus_Billing__Last}" rerender="bsPgBlk" action="{!lastPage}" disabled="{!IF(offsetSize + limitSize > totalRecs, true, false)}"/>  
+	         <apex:outputPanel style="float:right;">
+	           <apex:outputText style="valign:top;" value="  {!$Label.Apttus_Billing__Totalnumberofrecords}: {!totalRecs}  " />
+	         </apex:outputPanel>                    
+	      </apex:outputPanel> 
+	  </apex:pageBlock>        
+  </apex:form>       
+</apex:page>

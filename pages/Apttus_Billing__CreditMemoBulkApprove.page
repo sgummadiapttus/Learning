@@ -1,0 +1,25 @@
+<!-- 
+    Apttus Billing 
+    CreditMemoBulkApprove
+ 
+    @2013-2015 Apttus Inc. All rights reserved.
+ -->
+<apex:page standardController="Apttus_Billing__CreditMemo__c" extensions="Apttus_Billing.CreditMemoSetController" recordSetVar="creditMemos" action="{!selectedCreditMemos}" tabstyle="Apttus_Billing__CreditMemo__c">
+   <apex:form >
+       <apex:pageBlock title="{!$Label.Apttus_Billing__Approve} {!$Label.Apttus_Billing__Selected} {!$ObjectType.Apttus_Billing__CreditMemo__c.labelplural}">
+            <apex:pageMessages />
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!approveCreditMemos}" value="{!$Label.Apttus_Billing__Confirm}" disabled="{!IF(candidateCreditMemoSize > 0, false, true)}"/>
+                <apex:commandButton id="cancelBtn" value="{!$Label.Apttus_Billing__Cancel}" action="{!cancel}" />
+            </apex:pageBlockButtons>
+            <apex:pageBlockTable value="{!selected}" var="crdtmemo" rendered="{!selectedListSize > 0}">
+                <apex:column value="{!crdtmemo.Name}"/>
+                <apex:column value="{!crdtmemo.Apttus_Billing__CreditMemoDate__c}"/>
+                <apex:column value="{!crdtmemo.Apttus_Billing__Status__c}"/>
+                <apex:column value="{!crdtmemo.Apttus_Billing__BillToAccountId__c}"/> 
+                <apex:column value="{!crdtmemo.Apttus_Billing__CreditAmount__c}"/>
+                                 <!--   <apex:column value="{!crdtmemo.TotalTaxAmount__c}"/>-->
+            </apex:pageBlockTable> 
+        </apex:pageBlock>
+    </apex:form>    
+</apex:page>

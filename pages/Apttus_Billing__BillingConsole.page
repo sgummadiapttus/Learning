@@ -1,0 +1,97 @@
+<!--
+    Apttus Billing
+    BillingConsole
+
+    @2014-2015 Apttus Inc. All rights reserved.
+ -->
+<apex:page sidebar="false" tabStyle="BillingConsole__tab" controller="Apttus_Billing.BillingConsoleController">
+    <apex:stylesheet value="{!URLFOR($Resource.Apttus_Config2__JQueryUILibrary19, 'css/smoothness/jquery-ui-1.9.2.custom.css')}" />
+    <apex:stylesheet value="{!URLFOR($Resource.Apttus_Billing__ConsoleCSS)}" />
+
+    <style>
+        .aptConsoleTitleImage {
+                background-image: url("{!URLFOR($Resource.BillingConsoleIcons, 'BillingConsoleIcons/billingconsoletitlebar.jpg')}");
+                background-repeat : no-repeat; 
+                background-size : auto auto;
+                background-color: #2193D9;
+                height: 40px;
+            }
+    </style>
+    <apex:outputPanel layout="block" styleClass="aptRoundedDiv" style="margin-right:10px; margin-top:10px;" >
+      <apex:outputPanel layout="block" styleClass="aptConsoleTitleImage">
+          <apex:outputLabel styleClass="aptConsoleTitleLabel">{!$Label.Apttus_Billing__BillingManagementSetupConsole}</apex:outputLabel>
+      </apex:outputPanel>
+            
+      <apex:outputPanel styleClass="aptConsole" layout="block">                
+		        <apex:outputPanel styleClass="aptConsoleWrapper" layout="block">
+		           <apex:outputPanel styleClass="aptConsoleItem"  layout="block">
+		              <apex:image url="{!URLFOR($Resource.Apttus_Billing__BillingConsoleIcons, 'BillingConsoleIcons/billingschedule.jpg')}" styleClass="aptConsoleImage" />
+		              <apex:outputPanel styleClass="aptConsoleItemTitle" layout="block">{!$Label.Apttus_Billing__BillingSetup}</apex:outputPanel>
+		              <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block"><br />
+		                 <a id="theCommandLink1" class="aptConsoleItemLink" href="{!BillingPreferenceUrl}">{!$ObjectType.Apttus_Config2__BillingPreference__c.labelPlural}</a><br /><br />
+		                 <a id="theCommandLink2" class="aptConsoleItemLink" href="{!$Page.BillingSystemProperties}">{!$ObjectType.BillingSystemProperties__c.label}</a>
+		              </apex:outputPanel>
+		           </apex:outputPanel>
+		          
+		           <apex:outputPanel styleClass="aptConsoleItem" layout="block">
+		              <apex:image url="{!URLFOR($Resource.Apttus_Billing__BillingConsoleIcons, 'BillingConsoleIcons/invoice.jpg')}" styleClass="aptConsoleImage" />
+		              <apex:outputPanel styleClass="aptConsoleItemTitle" layout="block">{!$Label.Apttus_Billing__Invoicing}</apex:outputPanel>
+		              <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block"><br />
+		                 <a id="theCommandLink" class="aptConsoleItemLink" href="{!PaymentTermsUrl}">{!$ObjectType.Apttus_Config2__PaymentTerm__c.labelPlural}</a> <br /><br />
+		                 <a id="theCommandLink1" class="aptConsoleItemLink" href="{!InvoiceRunsUrl}">{!$ObjectType.InvoiceRun__c.labelPlural}</a> <br /><br />
+		                 <a  id="theCommandLink2" class="aptConsoleItemLink" href="{!$Page.SystemProperties}">{!$Label.BillingSettings}</a>                        
+		              </apex:outputPanel>
+		           </apex:outputPanel>
+		          
+		           <apex:outputPanel styleClass="aptConsoleItem" layout="block">
+		              <apex:image url="{!URLFOR($Resource.Apttus_Billing__BillingConsoleIcons, 'BillingConsoleIcons/Finance.jpg')}" styleClass="aptConsoleImage" />
+		              <apex:outputPanel styleClass="aptConsoleItemTitle" layout="block">{!$Label.Apttus_Billing__Finance}</apex:outputPanel>
+		              <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block"><br />
+		                 <a id="theCommandLink" class="aptConsoleItemLink" href="{!GLAccountMapRulesUrl}">{!$ObjectType.Apttus_Config2__GLAccountMapRule__c.labelPlural}</a> <br /><br />
+		                 <a id="theCommandLink1" class="aptConsoleItemLink" href="{!RevenueRecognitionPoliciesUrl}">{!$ObjectType.Apttus_Config2__RevRecPolicy__c.labelPlural}</a>
+		              </apex:outputPanel>
+		           </apex:outputPanel>          
+		        </apex:outputPanel>
+                
+                <apex:outputPanel styleClass="aptConsoleWrapper" layout="block">
+                    <apex:outputPanel styleClass="aptConsoleItem1"  layout="block">
+			          <apex:image url="{!URLFOR($Resource.Apttus_Billing__BillingConsoleIcons, 'BillingConsoleIcons/usage.jpg')}" styleClass="aptConsoleImage1" />
+			          <apex:outputPanel styleClass="aptConsoleItemTitle1" layout="block">{!$Label.Apttus_Billing__UsageProcessing}</apex:outputPanel>
+			          <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block"><br />
+			             <a id="chargeTypeCommandLink1" class="aptConsoleItemLink" href="{!ChargeTypesUrl}">{!$ObjectType.Apttus_Config2__ChargeType__c.labelPlural}</a><br /><br />
+			             <a id="chargeGrpCommandLink1" class="aptConsoleItemLink" href="{!ChargeGroupsUrl}">{!$ObjectType.Apttus_Config2__ChargeGroup__c.labelPlural}</a><br /><br />
+			             <a id="usgRatingBatchCommandLink1" class="aptConsoleItemLink" href="{!ApexJobUrl}">{!$Label.UsageRatingBatchJobs}</a>
+			          </apex:outputPanel>
+                    </apex:outputPanel>
+            
+		            <apex:outputPanel styleClass="aptConsoleItem1" layout="block">
+		              <apex:image url="{!URLFOR($Resource.Apttus_Billing__BillingConsoleIcons, 'BillingConsoleIcons/taxation.jpg')}" styleClass="aptConsoleImage1" />
+		              <apex:outputPanel styleClass="aptConsoleItemTitle1" layout="block">{!$Label.Apttus_Billing__Taxation}</apex:outputPanel>
+		              <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block"><br />
+		                 <a id="taxCodeCommandLink" class="aptConsoleItemLink" href="{!TaxCodesUrl}">{!$ObjectType.Apttus_Config2__TaxCode__c.labelPlural}</a><br /><br />
+		              </apex:outputPanel>
+		            </apex:outputPanel>
+          
+		            <apex:outputPanel styleClass="aptConsoleItem1" layout="block">
+		              <apex:image url="{!URLFOR($Resource.Apttus_Billing__BillingConsoleIcons, 'BillingConsoleIcons/usage.jpg')}" styleClass="aptConsoleImage1" />
+		              <apex:outputPanel styleClass="aptConsoleItemTitle1" layout="block">{!$Label.Apttus_Billing__Templates}</apex:outputPanel>
+		              <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block"><br />
+		                 <a id="invcTmpltCommandLink" class="aptConsoleItemLink" href="{!$Page.TemplateListView}?viewName=Invoice">{!$ObjectType.Invoice__c.label}</a> <br /><br />
+		                 <a id="invcStmtTmpltCommandLink" class="aptConsoleItemLink" href="{!$Page.TemplateListView}?viewName=Invoice Statement">{!$Label.InvoiceStatement}</a> <br /><br />
+		                 <a id="cmTmpltCommandLink" class="aptConsoleItemLink" href="{!$Page.TemplateListView}?viewName=Credit Memo">{!$ObjectType.CreditMemo__c.label}</a>
+		              </apex:outputPanel>
+		            </apex:outputPanel>
+
+			        <apex:outputPanel styleClass="aptConsoleItem1" layout="block" rendered="{!$ObjectType.EmailTemplate.accessible}">
+			          <apex:image url="{!URLFOR($Resource.Apttus_Billing__BillingConsoleIcons, 'BillingConsoleIcons/usage.jpg')}" styleClass="aptConsoleImage1" />
+			          <apex:outputPanel styleClass="aptConsoleItemTitle1" layout="block">{!$ObjectType.EmailTemplate.labelPlural}</apex:outputPanel>
+			          <apex:outputPanel styleClass="aptConsoleItemLabel" layout="block"><br />
+			             <a id="invcEmailTmpltCommandLink" class="aptConsoleItemLink" href="{!invoiceEmailTemplatesPageUrl}">{!$ObjectType.Invoice__c.label}</a> <br /><br />
+			             <a id="cmEmailTmpltCommandLink" class="aptConsoleItemLink" href="{!creditMemoEmailTemplatesPageUrl}">{!$ObjectType.CreditMemo__c.label}</a>
+			          </apex:outputPanel>
+			        </apex:outputPanel>          
+                </apex:outputPanel>
+                 
+            </apex:outputPanel>
+        </apex:outputPanel>
+</apex:page>

@@ -12,13 +12,13 @@ global class SubBundleUpdateJob implements Database.Batchable<Id>, Database.Stat
     global SubBundleUpdateJob(Map<Id,Apttus_Config2.SubBundleUpdateJob.BCVBuilder> products, Apttus_Config2.BundleUpdateJob parentProcess) {
 
     }
-    global void execute(Database.Batchable<sObject>Context bc, List<Id> scope) {
+    global void execute(Database.BatchableContext bc, List<Id> scope) {
 
     }
-    global void finish(Database.Batchable<sObject>Context bc) {
+    global void finish(Database.BatchableContext bc) {
 
     }
-    global System.Iterable start(Database.Batchable<sObject>Context info) {
+    global System.Iterable start(Database.BatchableContext info) {
         return null;
     }
 global class BCVBuilder {

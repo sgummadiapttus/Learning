@@ -11,13 +11,13 @@ global class RepriceCartJob implements Database.Batchable<SObject> {
     global RepriceCartJob(Id cartId, String cartTitle) {
 
     }
-    global void execute(Database.Batchable<sObject>Context bc, List<SObject> scope) {
+    global void execute(Database.BatchableContext bc, List<SObject> scope) {
 
     }
-    global void finish(Database.Batchable<sObject>Context bc) {
+    global void finish(Database.BatchableContext bc) {
 
     }
-    global Database.QueryLocator start(Database.Batchable<sObject>Context bc) {
+    global Database.QueryLocator start(Database.BatchableContext bc) {
         return null;
     }
 }

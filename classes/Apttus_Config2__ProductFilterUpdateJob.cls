@@ -12,13 +12,13 @@ global class ProductFilterUpdateJob implements Database.Batchable<SObject>, Data
     global ProductFilterUpdateJob(List<Apttus_Config2__ProductClassification__c> productClassificationsList) {
 
     }
-    global void execute(Database.Batchable<sObject>Context ctx, List<SObject> scope) {
+    global void execute(Database.BatchableContext ctx, List<SObject> scope) {
 
     }
-    global void finish(Database.Batchable<sObject>Context bc) {
+    global void finish(Database.BatchableContext bc) {
 
     }
-    global Database.QueryLocator start(Database.Batchable<sObject>Context ctx) {
+    global Database.QueryLocator start(Database.BatchableContext ctx) {
         return null;
     }
 }

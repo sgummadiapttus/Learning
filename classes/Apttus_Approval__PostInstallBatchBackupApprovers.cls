@@ -6,13 +6,13 @@ methods, variables, and properties.
 To enable code to compile, all methods return null.
 */
 global class PostInstallBatchBackupApprovers implements Database.Batchable<SObject> {
-    global void execute(Database.Batchable<sObject>Context BC, List<Apttus_Approval__Backup_Approver__c> baList) {
+    global void execute(Database.BatchableContext BC, List<Apttus_Approval__Backup_Approver__c> baList) {
 
     }
-    global void finish(Database.Batchable<sObject>Context bc) {
+    global void finish(Database.BatchableContext bc) {
 
     }
-    global Database.QueryLocator start(Database.Batchable<sObject>Context bc) {
+    global Database.QueryLocator start(Database.BatchableContext bc) {
         return null;
     }
 }

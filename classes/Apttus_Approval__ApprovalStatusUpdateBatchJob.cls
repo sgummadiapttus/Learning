@@ -9,13 +9,13 @@ global class ApprovalStatusUpdateBatchJob implements Database.Batchable<SObject>
     global ApprovalStatusUpdateBatchJob() {
 
     }
-    global void execute(Database.Batchable<sObject>Context BC, List<Apttus_Approval__Approval_Request__c> scope) {
+    global void execute(Database.BatchableContext BC, List<Apttus_Approval__Approval_Request__c> scope) {
 
     }
-    global void finish(Database.Batchable<sObject>Context bc) {
+    global void finish(Database.BatchableContext bc) {
 
     }
-    global Database.QueryLocator start(Database.Batchable<sObject>Context bc) {
+    global Database.QueryLocator start(Database.BatchableContext bc) {
         return null;
     }
 }

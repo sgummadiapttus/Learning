@@ -9,7 +9,7 @@ global class RollbackActualRevenueJob2 implements Database.Batchable<Apttus_Reve
     global RollbackActualRevenueJob2() {
 
     }
-    global void finish(Database.Batchable<sObject>Context bc) {
+    global void finish(Database.BatchableContext bc) {
 
     }
 }

@@ -9,13 +9,13 @@ global class UpdateConstraintCondCriteriaFields implements Database.Batchable<SO
     global UpdateConstraintCondCriteriaFields() {
 
     }
-    global void execute(Database.Batchable<sObject>Context context, List<Apttus_Config2__ConstraintRuleCondition__c> scope) {
+    global void execute(Database.BatchableContext context, List<Apttus_Config2__ConstraintRuleCondition__c> scope) {
 
     }
-    global void finish(Database.Batchable<sObject>Context context) {
+    global void finish(Database.BatchableContext context) {
 
     }
-    global Database.QueryLocator start(Database.Batchable<sObject>Context context) {
+    global Database.QueryLocator start(Database.BatchableContext context) {
         return null;
     }
 }

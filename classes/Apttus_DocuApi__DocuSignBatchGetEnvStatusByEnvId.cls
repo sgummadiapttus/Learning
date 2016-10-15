@@ -13,13 +13,13 @@ global class DocuSignBatchGetEnvStatusByEnvId implements Database.AllowsCallouts
     global DocuSignBatchGetEnvStatusByEnvId(String iEnvelopeId, Boolean iRetrieveDocsAsCombined, Boolean iRetrieveCertificate) {
 
     }
-    global void execute(Database.Batchable<sObject>Context info, List<Apttus_DocuApi.BatchJob> scope) {
+    global void execute(Database.BatchableContext info, List<Apttus_DocuApi.BatchJob> scope) {
 
     }
-    global void finish(Database.Batchable<sObject>Context info) {
+    global void finish(Database.BatchableContext info) {
 
     }
-    global System.Iterable start(Database.Batchable<sObject>Context info) {
+    global System.Iterable start(Database.BatchableContext info) {
         return null;
     }
 }

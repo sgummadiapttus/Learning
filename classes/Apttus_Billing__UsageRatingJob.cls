@@ -15,13 +15,13 @@ global class UsageRatingJob implements Database.Batchable<SObject>, Database.Sta
     global UsageRatingJob(Set<Id> usageInputIDs, Boolean unrateUsageInput) {
 
     }
-    global void execute(Database.Batchable<sObject>Context bc, List<SObject> scope) {
+    global void execute(Database.BatchableContext bc, List<SObject> scope) {
 
     }
-    global void finish(Database.Batchable<sObject>Context bc) {
+    global void finish(Database.BatchableContext bc) {
 
     }
-    global Database.QueryLocator start(Database.Batchable<sObject>Context bc) {
+    global Database.QueryLocator start(Database.BatchableContext bc) {
         return null;
     }
 }

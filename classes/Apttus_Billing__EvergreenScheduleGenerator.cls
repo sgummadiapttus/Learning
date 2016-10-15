@@ -9,13 +9,13 @@ global class EvergreenScheduleGenerator implements Database.AllowsCallouts, Data
     global EvergreenScheduleGenerator() {
 
     }
-    global void execute(Database.Batchable<sObject>Context bContext, List<SObject> scope) {
+    global void execute(Database.BatchableContext bContext, List<SObject> scope) {
 
     }
-    global void finish(Database.Batchable<sObject>Context bContext) {
+    global void finish(Database.BatchableContext bContext) {
 
     }
-    global Database.QueryLocator start(Database.Batchable<sObject>Context bContext) {
+    global Database.QueryLocator start(Database.BatchableContext bContext) {
         return null;
     }
 }

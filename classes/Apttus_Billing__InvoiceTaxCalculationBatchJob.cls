@@ -6,13 +6,13 @@ methods, variables, and properties.
 To enable code to compile, all methods return null.
 */
 global class InvoiceTaxCalculationBatchJob implements Database.AllowsCallouts, Database.Batchable<SObject>, Database.Stateful {
-    global void execute(Database.Batchable<sObject>Context context, List<SObject> scope) {
+    global void execute(Database.BatchableContext context, List<SObject> scope) {
 
     }
-    global void finish(Database.Batchable<sObject>Context context) {
+    global void finish(Database.BatchableContext context) {
 
     }
-    global Database.QueryLocator start(Database.Batchable<sObject>Context context) {
+    global Database.QueryLocator start(Database.BatchableContext context) {
         return null;
     }
 }

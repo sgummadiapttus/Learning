@@ -18,13 +18,13 @@ global class PermissionSetUnionUpdateJob implements Database.Batchable<SObject>,
     global PermissionSetUnionUpdateJob(String query, String objectType, Id permissionSetId, Map<String,SObject> objectsToUpdate, Set<String> namespaceFilters) {
 
     }
-    global void execute(Database.Batchable<sObject>Context batchContext, List<SObject> scope) {
+    global void execute(Database.BatchableContext batchContext, List<SObject> scope) {
 
     }
-    global void finish(Database.Batchable<sObject>Context batchContext) {
+    global void finish(Database.BatchableContext batchContext) {
 
     }
-    global Database.QueryLocator start(Database.Batchable<sObject>Context batchContext) {
+    global Database.QueryLocator start(Database.BatchableContext batchContext) {
         return null;
     }
 }

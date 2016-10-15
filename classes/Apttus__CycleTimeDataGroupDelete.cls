@@ -9,13 +9,13 @@ global class CycleTimeDataGroupDelete implements Database.Batchable<SObject> {
     global CycleTimeDataGroupDelete(Id id) {
 
     }
-    global void execute(Database.Batchable<sObject>Context batchCtx, List<SObject> objs) {
+    global void execute(Database.BatchableContext batchCtx, List<SObject> objs) {
 
     }
-    global void finish(Database.Batchable<sObject>Context batchCtx) {
+    global void finish(Database.BatchableContext batchCtx) {
 
     }
-    global Database.QueryLocator start(Database.Batchable<sObject>Context batchCtx) {
+    global Database.QueryLocator start(Database.BatchableContext batchCtx) {
         return null;
     }
 }

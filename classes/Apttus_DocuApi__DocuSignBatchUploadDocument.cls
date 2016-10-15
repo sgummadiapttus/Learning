@@ -11,13 +11,13 @@ global class DocuSignBatchUploadDocument implements Database.AllowsCallouts, Dat
     global DocuSignBatchUploadDocument(String iParentJobId, Apttus_DocuApi.DocuSignUtil.DocuSignEnvelopeData iDocuSignEnvelopeData, Apttus_DocuApi.DocuSignUtil.DocuSignAccessToken iDocuSignAccessToken, Apttus_DocuApi.DocuSignRESTService iDocuSignRESTService) {
 
     }
-    global void execute(Database.Batchable<sObject>Context info, List<Apttus_DocuApi.DocuSignUtil.AttachmentWrapper> scope) {
+    global void execute(Database.BatchableContext info, List<Apttus_DocuApi.DocuSignUtil.AttachmentWrapper> scope) {
 
     }
-    global void finish(Database.Batchable<sObject>Context info) {
+    global void finish(Database.BatchableContext info) {
 
     }
-    global System.Iterable start(Database.Batchable<sObject>Context info) {
+    global System.Iterable start(Database.BatchableContext info) {
         return null;
     }
 }

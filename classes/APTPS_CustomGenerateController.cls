@@ -26,7 +26,7 @@ public class APTPS_CustomGenerateController {
     public List<SelectOption> outputFormats = new List<SelectOption>();  
     public List<SelectOption> protectionLevels = new List<SelectOption>();   
     public List<Apttus__APTS_Agreement__c> agreementIds = new List<Apttus__APTS_Agreement__c>();
-	public List<Apttus__APTS_Template__c> tList = new List<Apttus__APTS_Template__c>([SELECT Id,Name FROM Apttus__APTS_Template__c WHERE Apttus__Type__c=:'Agreement']);
+	public List<Apttus__APTS_Template__c> tList = new List<Apttus__APTS_Template__c>([SELECT Id,Name FROM Apttus__APTS_Template__c WHERE Apttus__Type__c=:'Agreement' AND Apttus__IsActive__c = true]);
     public List<myWrapper> wrapperObjList{get;set;}
     public List<Id> selectedList = new List<Id>();
         
@@ -39,8 +39,11 @@ public class APTPS_CustomGenerateController {
         	myWrapper wrapObj= new myWrapper(template);
             wrapperObjList.add(wrapObj);           
         } 
+        
+        pLevel = 'Insert comments and tracked changes only';
+        outputFormat = 'DOCX';
         System.debug('wrapper list size is'+wrapperObjList.size());
-    	System.debug('Agreement concerned is --->'+agreementId);       	
+    	//System.debug('Agreement concerned is --->'+agreementId);       	
     }
     
     public List<SelectOption> getOutputFormatOptions(){
@@ -60,10 +63,6 @@ public class APTPS_CustomGenerateController {
         return protectionLevels;
     }
     
-    public String getPLevelTitle(){
-        selectprotectionLevels = 'Select Protection Levels';
-        return selectprotectionLevels;
-    }   
      public void InitiateAction(){
         System.debug('method called');        
     }
@@ -90,19 +89,19 @@ public class APTPS_CustomGenerateController {
         if(numOfDocs>0){
         
         Id sId = selectedList.get(index);
-		String pLevel = 'Full access';
-		String docFormat = 'PDF';
+		String pLevelselected = pLevel;
+		String docFormat = outputFormat;
 		String apiServerURL = System.Url.getSalesforceBaseUrl().toExternalForm() +
-								'/services/Soap/u/14.0/00Df0000003aEJ3';// + UserInfo.getOrganizationId();
+								'/services/Soap/u/14.0/'+UserInfo.getOrganizationId();
 		String SessionId = UserInfo.getSessionId();  //This is the session Id.
-		System.debug('sid'+sId+' pLevel'+pLevel+' agmtId'+agreementId+' SessionId'+SessionId+' apiServerURL'+apiServerURL);
+		System.debug('sid'+sId+' pLevel'+pLevelselected+' agmtId'+agreementId+' SessionId'+SessionId+' apiServerURL'+apiServerURL);
 		            
-        system.assert(sId!=null && pLevel!=null && agreementId!=null && SessionId!=null && apiServerURL!=null ,'Required parameters missing.');
+        system.assert(sId!=null && pLevelselected!=null && agreementId!=null && SessionId!=null && apiServerURL!=null ,'Required parameters missing.');
         
         
-        generatedDocId = Apttus.MergeWebService.generateDoc(sId, agreementId, pLevel, docFormat, SessionId, apiServerURL);
-        System.debug('generatedDocId is ---->'+generatedDocId);
-        System.debug('Protection level selected is ---->'+pLevel);   	
+        generatedDocId = Apttus.MergeWebService.generateDoc(sId, agreementId, pLevelselected, docFormat, SessionId, apiServerURL);
+        //System.debug('generatedDocId is ---->'+generatedDocId);
+        System.debug('Protection level selected is ---->'+pLevelselected);   	
         }
         else{
             ref = FinishPage();

@@ -27,7 +27,7 @@
                 </apex:facet>
                 </apex:actionStatus><br/><br/>
             </apex:pageBlockSection><hr/>
-       <!--     <apex:outputText style="font-weight:700" value="1. Select Document Output Format"></apex:outputText><br/>	
+           <apex:outputText style="font-weight:700" value="1. Select Document Output Format"></apex:outputText><br/>	
 				<apex:panelGrid columns="1" >
 					<apex:outputLabel style="font-weight:bold" />
 					<apex:selectRadio value="{!outputFormat}"  >
@@ -37,10 +37,10 @@
             <apex:outputText style="font-weight:700" value="2. Select Document Protection"></apex:outputText><br/>
 				<apex:panelGrid columns="1" >
 					<apex:outputLabel style="font-weight:bold" />
-					<apex:selectRadio title="{!PLevelTitle}" value="{!pLevel}">
+					<apex:selectRadio value="{!pLevel}">
 					  	<apex:selectOptions value="{!PLevels}"  />
 					</apex:selectRadio><p/>
-            </apex:panelGrid><hr/> -->
+            </apex:panelGrid><hr/> 
 
             <apex:outputText style="font-weight:700" value="3. Select the templates for generating agreement"></apex:outputText><br/>
             <apex:pageBlockTable value="{!wrapperObjList}" var="wrap">         
@@ -50,25 +50,36 @@
                 <apex:column value="{!wrap.templatename}"/>
             </apex:pageBlockTable>
 
-           <apex:commandButton action="{!getSelectedList}" value="Generate" status="spinner" oncomplete="contGen()" />
-            <apex:actionFunction action="{!generateDocs}" id="endAction" status="spinner" name="endActionfctn" oncomplete="contGen()" reRender="{!Id}" />
+           <apex:commandButton action="{!getSelectedList}" value="Generate" status="spinner" oncomplete="contGen('{!numOfDocs}');" />
+            <apex:actionFunction action="{!generateDocs}" id="endAction" status="spinner" name="endActionfctn" oncomplete="contGen('{!numOfDocs}');" reRender="{!Id}" />
             <apex:commandButton action="{!FinishPage}" value="Return"/> 
             <apex:actionFunction action="{!FinishPage}" id="agmtPage" name="returnPage"/>
+
         </apex:pageBlock>          
     </apex:form>
     			
     <script>  
-    var numbe = 0;
+    //var numbe = 0;
 
-    function contGen(){  
-        //numofD;
-        //alert('Number of docs is -->'+numofD);
-        endActionfctn();  
+    function contGen(num){  
+
+        if(num>0){
+	
+            endActionfctn();  
+            num = num-1;
+            return true;
+        }
+        else{
+            
+            alert('Document Generation successful!');
+            returnPage();
+            return false;            
+        }
     }
 
-	function finishPage(){
-        alert('Document Generation successful!');
-        returnPage();
+    	function finishPage(){
+            alert('Document Generation successful!');
+         returnPage();
         }
    </script>
 

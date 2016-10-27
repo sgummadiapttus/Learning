@@ -16,7 +16,7 @@
     </packageVersions>
     <packageVersions>
         <majorNumber>4</majorNumber>
-        <minorNumber>85</minorNumber>
+        <minorNumber>91</minorNumber>
         <namespace>Apttus_Billing</namespace>
     </packageVersions>
     <packageVersions>
@@ -51,7 +51,7 @@
     </packageVersions>
     <packageVersions>
         <majorNumber>9</majorNumber>
-        <minorNumber>1072</minorNumber>
+        <minorNumber>1114</minorNumber>
         <namespace>Apttus_Config2</namespace>
     </packageVersions>
     <packageVersions>
@@ -128,5 +128,10 @@
         <majorNumber>6</majorNumber>
         <minorNumber>0</minorNumber>
         <namespace>ca_collab_2_0</namespace>
+    </packageVersions>
+    <packageVersions>
+        <majorNumber>5</majorNumber>
+        <minorNumber>1</minorNumber>
+        <namespace>copado</namespace>
     </packageVersions>
 </ApexPage>
